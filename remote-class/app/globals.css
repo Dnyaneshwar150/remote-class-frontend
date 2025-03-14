@@ -1,0 +1,141 @@
+/* ROOT VARIABLES */
+:root {
+  font-size: 12px; /* Default for small screens */
+
+  /* Colors */
+  --primary-white: #ffffff;
+  --primary-blue: #1947e5;
+  --amber: #ffbd12;
+  --black: #18191f;
+  --redish-orange: #f95a2c;
+  --teal: #00c6ae;
+  --light-amber: #ffd465;
+  --light-pink: #ffc7de;
+  --cyan: #61e4c5;
+  --dark-grey: #3a3a3a;
+  --body-background: #f9f9f9;
+  --hover-amber: #d89200;
+
+  /* Font Weights */
+  --fontweight-light: 300;
+  --fontweight-regular: 400;
+  --fontweight-medium: 500;
+  --fontweight-bold: 700;
+  --fontweight-extra-bold: 800;
+}
+
+/* GLOBAL STYLES */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+html,
+body {
+  position: relative;
+  height: 100%;
+  font-family: "Montserrat", sans-serif;
+  font-weight: var(--fontweight-regular);
+  color: var(--dark-grey);
+  background: var(--body-background);
+  -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  scroll-behavior: smooth;
+  line-height: 1.2;
+}
+
+/* Hide scrollbar for Chrome, Safari, and Opera */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* TYPOGRAPHY */
+h1 {
+  font-size: 2.25rem; /* 36px */
+  font-weight: var(--fontweight-extra-bold);
+  color: var(--black);
+}
+h2 {
+  font-size: 1.5rem; /* 24px */
+  font-weight: var(--fontweight-extra-bold);
+  color: var(--black);
+}
+h3 {
+  font-size: 1.313rem; /* 21px */
+  font-weight: var(--fontweight-extra-bold);
+  color: var(--black);
+}
+h4 {
+  font-size: 1.313rem; /* 21px */
+  font-weight: var(--fontweight-bold);
+  color: var(--black);
+}
+h5 {
+  font-size: 1.313rem; /* 21px */
+  font-weight: var(--fontweight-medium);
+  color: var(--black);
+}
+h6 {
+  font-size: 0.75rem; /* 12px */
+  font-weight: var(--fontweight-extra-bold);
+  color: var(--black);
+}
+
+/* Additional Typography */
+.card-heading {
+  font-size: 1.125rem; /* 18px */
+  font-weight: var(--fontweight-medium);
+}
+
+.link-text {
+  font-size: 1rem; /* 16px */
+  font-weight: var(--fontweight-light);
+  color: var(--primary-blue);
+}
+.small2 {
+  font-size: 0.875rem; /* 14px */
+  font-weight: var(--fontweight-regular);
+  color: var(--black);
+}
+.small-text {
+  font-size: 0.75rem; /* 12px */
+  font-weight: var(--fontweight-light);
+}
+
+/* UTILITIES */
+.ellipsis-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* MEDIA QUERIES: RESPONSIVE FONT-SIZE */
+@media screen and (min-width: 768px) {
+  :root {
+    font-size: 13px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  :root {
+    font-size: 14px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  :root {
+    font-size: 15px;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  :root {
+    font-size: 16px;
+  }
+}
