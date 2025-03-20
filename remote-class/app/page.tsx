@@ -40,7 +40,7 @@ const LogoPage:React.FC<{onNext: ()=> void}> = ({onNext}) => {
     <Grid fontWeight={"var(--fontweight-bold)"} fontSize={"2.25rem"} color={"var(--primary-white)"} textAlign={"center"}>REMOTE CLASS</Grid>
     </Grid>
 
-    <Grid item container   justifyContent={"center"}  color={"var(--primary-white)"} textAlign={"center"} mt={"auto"}>
+    <Grid item   justifyContent={"center"}  color={"var(--primary-white)"} textAlign={"center"} mt={"auto"}>
      <Grid fontSize={"1.25rem"} fontWeight={"var(--fontweight-medium)"}>Project by &nbsp;</Grid>
     <Grid  fontSize={"1.5rem"} fontWeight={"var(--fontweight-bold)"}>Yogita Ilag &nbsp;</Grid>
     <Grid  fontSize={"1.5rem"} fontWeight={"var(--fontweight-bold)"}>Shivam Telange &nbsp;</Grid>
@@ -57,7 +57,7 @@ const StudentPage:React.FC<{onNext: ()=> void}>= ({onNext}) => {
      <Grid container justifyContent={"center"} py={"3rem"}><StudentOnBoardingIcon/></Grid>
     </Grid>
     <Grid item container justifyContent={"center"} color={"var(--black)"} >
-     <Grid container justifyContent={"center"} fontSize={"3rem"} fontWeight={"var(--fontweight-extra-bold)"}>We are for Students</Grid>
+     <Grid container textAlign={"center"} fontSize={"3rem"} fontWeight={"var(--fontweight-extra-bold)"}>We are for Students</Grid>
      <Grid container justifyContent={"center"} fontSize={"1.75rem"} fontWeight={"var(--fontweight-medium)"}>Wireframe is still important for</Grid>
      <Grid container justifyContent={"center"}  textAlign={"center"} fontSize={"1.75rem"} fontWeight={"var(--fontweight-extra-medium)"}>ideation. It will help you to</Grid>
      <Grid  container justifyContent={"center"} textAlign={"center"} fontSize={"1.75rem"} fontWeight={"var(--fontweight-extra-medium)"}>quickly test idea.</Grid>
@@ -74,9 +74,9 @@ const TeacherPage:React.FC<{onNext: ()=> void}> = ({onNext}) => {
      <Grid container justifyContent={"center"} py={"3rem"}><TeacherOnBoarding/></Grid>
     </Grid>
     <Grid item container justifyContent={"center"} color={"var(--primary-white)"} >
-     <Grid  container   justifyContent={"center"} fontSize={"3rem"} fontWeight={"var(--fontweight-extra-bold)"}>We are for Teachers</Grid>
-     <Grid  container   justifyContent={"center"} fontSize={"1.75rem"} fontWeight={"var(--fontweight-medium)"}>Wireframe is still important for</Grid>
-     <Grid  container   justifyContent={"center"} fontSize={"1.75rem"} fontWeight={"var(--fontweight-extra-medium)"}>ideation.</Grid>
+     <Grid  container justifyContent={"center"} textAlign={"center"} fontSize={"3rem"} fontWeight={"var(--fontweight-extra-bold)"}>We are for Teachers</Grid>
+     <Grid  container justifyContent={"center"} fontSize={"1.75rem"} fontWeight={"var(--fontweight-medium)"}>Wireframe is still important for</Grid>
+     <Grid  container  justifyContent={"center"} fontSize={"1.75rem"} fontWeight={"var(--fontweight-extra-medium)"}>ideation.</Grid>
     </Grid>
     <Grid container justifyContent={"center"} alignItems={"end"}><CommonButton label={"Get started"}
      onClick={onNext}  

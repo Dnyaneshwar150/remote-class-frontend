@@ -1,7 +1,7 @@
 "use client";
 
 import BackButton from '@/app/components/common/Button/BackButton';
-import { Button, Grid, InputAdornment, TextField } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
@@ -10,6 +10,7 @@ import ClassIcon from '@mui/icons-material/Class';
 import PaymentIcon from '@mui/icons-material/Payment';
 import LockIcon from '@mui/icons-material/Lock';
 import CommonButton from '@/app/components/common/Button/CommonButton';
+import CustomTextField from '@/app/components/common/CustomTextField';
 
 
 
@@ -43,61 +44,7 @@ export default function Home() {
 
 }
 
-interface CustomTextFieldProps {
-    label: string;
-    icon: JSX.Element;
-    type?:string;
-  }
-  
-const CustomTextField: React.FC<CustomTextFieldProps> = ({ label, icon , type }) => {
-    return (
-      <TextField
-        label={label}
-        variant="outlined"
-        placeholder={label}
-        type={type && type}
-        fullWidth
-        InputProps={{
-          startAdornment: <InputAdornment position="start">{icon}</InputAdornment>,
-        }}
-        sx={{
-            "& .MuiOutlinedInput-root": {
-              borderRadius: "1.25rem", 
-              border: "2px solid var(--black)", 
-            },
-            "&.Mui-focused": {
-                borderWidth: "3px", 
-                borderColor: "var(--black)", 
-              },
-              "&:hover": {
-                borderColor: "var(--black)",
-              },
-            "& .MuiInputLabel-root": {
-              fontSize: "0",
-            },
-            "& .MuiInputLabel-root.Mui-focused": {
-              color: "var(--black)", 
-            },
 
-            "& .MuiOutlinedInput-input::placeholder": {
-                color: "var(--black)", 
-                fontSize: "1.75rem", 
-                fontWeight: "var(--fontweight-medium)", 
-                opacity: 1, 
-              },
-
-              "& .MuiOutlinedInput-notchedOutline": {
-                border: "none", 
-              },
-              "& .MuiOutlinedInput-input:focus": {
-                fontSize: "1.75rem", 
-                fontWeight: "var(--fontweight-medium)", 
-              },
-             
-          }}
-      />
-    );
-  };
 
   
   const SignupForm = () => {
