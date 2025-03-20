@@ -4,8 +4,10 @@ interface CustomTextFieldProps {
     label: string;
     icon: JSX.Element;
     type?:string;
+    value: string;
+    onChange: (value: string) => void;
   }
- const CustomTextField: React.FC<CustomTextFieldProps> = ({ label, icon , type }) => {
+ const CustomTextField: React.FC<CustomTextFieldProps> = ({ label, icon , type ,value , onChange }) => {
     return (
       <TextField
         label={label}
@@ -13,6 +15,8 @@ interface CustomTextFieldProps {
         placeholder={label}
         type={type && type}
         fullWidth
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         InputProps={{
           startAdornment: <InputAdornment position="start">{icon}</InputAdornment>,
         }}

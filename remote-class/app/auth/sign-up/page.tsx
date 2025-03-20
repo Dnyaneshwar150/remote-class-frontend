@@ -11,6 +11,8 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import LockIcon from '@mui/icons-material/Lock';
 import CommonButton from '@/app/components/common/Button/CommonButton';
 import CustomTextField from '@/app/components/common/CustomTextField';
+import { useSignupMutation } from '@/app/services/api/apiSlice';
+import { useState } from 'react';
 
 
 
@@ -48,17 +50,39 @@ export default function Home() {
 
   
   const SignupForm = () => {
-    const handleSignup = () => {
-        console.log("sign up click")
-    }
+
+    const [signup] = useSignupMutation();
+
+   const handleSignup = async () => {
+  signup(formData); // No need for try/catch 
+    };
+
+    const [formData, setFormData] = useState({
+      fullName: "",
+      email: "",
+      college: "",
+      classes: "",
+      collegeCode: "",
+      password: "",
+    });
+
+    console.log(formData)
+
+    const handleChange = (field: keyof typeof formData, value: string) => {
+      setFormData((prev: typeof formData) => ({ ...prev, [field]: value }));
+    };
+
+   
+
     return (
         <Grid container flexDirection={"column"} gap={"2rem"} py={"2rem"}>      
-            <CustomTextField label={"Full Name"} icon={<PermIdentityIcon  sx={{fontSize:"2.5rem"}}/> } />
-            <CustomTextField label={"Email address"} icon={<MailOutlineIcon  sx={{fontSize:"2.5rem"}}/> } />
-            <CustomTextField label={"Select college"} icon={<SchoolIcon  sx={{fontSize:"2.5rem"}}/> } />
-            <CustomTextField label={"Select classes"} icon={<ClassIcon  sx={{fontSize:"2.5rem"}}/> } />
-            <CustomTextField label={"Unique college code"} icon={<PaymentIcon  sx={{fontSize:"2.5rem"}}/> } />
-            <CustomTextField type={"password"} label={"Password"} icon={<LockIcon  sx={{fontSize:"2.5rem"}}/> } />
+       <CustomTextField label="Full Name" icon={<PermIdentityIcon sx={{ fontSize: "2.5rem" }} />} value={formData.fullName} onChange={(value) => handleChange("fullName", value)} />
+      <CustomTextField label="Email address" icon={<MailOutlineIcon sx={{ fontSize: "2.5rem" }} />} value={formData.email} onChange={(value) => handleChange("email", value)} />
+      <CustomTextField label="Select college" icon={<SchoolIcon sx={{ fontSize: "2.5rem" }} />} value={formData.college} onChange={(value) => handleChange("college", value)} />
+      <CustomTextField label="Select classes" icon={<ClassIcon sx={{ fontSize: "2.5rem" }} />} value={formData.classes} onChange={(value) => handleChange("classes", value)} />
+      <CustomTextField label="Unique college code" icon={<PaymentIcon sx={{ fontSize: "2.5rem" }} />} value={formData.collegeCode} onChange={(value) => handleChange("collegeCode", value)} />
+      <CustomTextField type="password" label="Password" icon={<LockIcon sx={{ fontSize: "2.5rem" }} />} value={formData.password} onChange={(value) => handleChange("password", value)} />
+
             <CommonButton label={"Sign up"} onClick={handleSignup} sxStyles={{backgroundColor:"var(--amber)", color:"var(--black)",  border:"2px solid var(--black)" ,borderBottom:"4.5px solid var(--black)" ,borderRadius: "1.25rem" ,     
  }}/>
        </Grid>
