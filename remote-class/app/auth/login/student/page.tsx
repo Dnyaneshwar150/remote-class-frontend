@@ -41,14 +41,19 @@ export default function Home ()   {
         <Grid item container justifyContent="center" alignContent="center">
           <PeepStanding />
         </Grid>
+        <Grid container justifyContent="center" alignItems="center">
+        <CommonButton label={"Sign in >"}       
+            onClick={() => setOpen(true)}
+ sxStyles={{backgroundColor:"var(--black)", color:"var(--primary-white)",}}/>
+      </Grid>
   
         <Modal open={open} onClose={() => setOpen(false)}>
           <Box
             sx={{
               position: "absolute",
-              top: "50%",
               left: "50%",
-              transform: "translate(-50%, -50%)",
+              bottom: "0",
+              transform: "translateX(-50%)", 
               bgcolor: "var(--primary-white)",
               borderRadius: 2,
               boxShadow: 24,
@@ -85,8 +90,7 @@ export default function Home ()   {
                 />
               </Grid>
 
-              <Grid item> <CommonButton label={"Sign in >"} onClick={handleSignIn} sxStyles={{backgroundColor:"var(--amber)", color:"var(--black)",  border:"2px solid var(--black)" ,borderBottom:"4.5px solid var(--black)" ,borderRadius: "1.25rem" ,     
- }}/>
+              <Grid item container justifyContent={'center'}> <CommonButton label={"Sign in >"} onClick={handleSignIn} sxStyles={{backgroundColor:"var(--black)", color:"var(--primary-white)",}}/>
   </Grid>
             </Grid>
           </Box>
