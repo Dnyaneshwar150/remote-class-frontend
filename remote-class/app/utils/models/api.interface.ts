@@ -36,3 +36,17 @@ export interface LoginPayload {
     message: string;
     userId: string;
   }
+
+  export interface StudentLoginPayload {
+    email: string;
+    password: string;
+  }
+
+  export interface StudentLoginResponse {
+    token: string;  
+     user: {
+    id: string;
+    name: string;
+    email: string;
+  };
+  } 

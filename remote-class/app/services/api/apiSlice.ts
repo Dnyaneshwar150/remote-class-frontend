@@ -1,4 +1,4 @@
-import { ForgetPasswordPayload, LoginPayload, LoginResponse, ResetPasswordPayload, SignupPayload, SignupResponse } from "@/app/utils/models/api.interface";
+import { ForgetPasswordPayload, LoginPayload, LoginResponse, ResetPasswordPayload, SignupPayload, SignupResponse, StudentLoginPayload, StudentLoginResponse } from "@/app/utils/models/api.interface";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 
@@ -44,6 +44,14 @@ export const remoteClassApi = createApi({
               body: SignupPayload,
             }),
           }),
+          studentLogin: builder.mutation<StudentLoginResponse, StudentLoginPayload>({
+            query: (credentials) => ({
+              url: "/auth/student-login",
+              method: "POST",
+              body: credentials,
+            }),
+          }),
+
     })
 })
 
@@ -52,5 +60,6 @@ export const
     useLogoutMutation,
     useResetPasswordMutation,
     useForgotPasswordMutation ,
-    useSignupMutation}
+    useSignupMutation ,
+  useStudentLoginMutation}
      = remoteClassApi

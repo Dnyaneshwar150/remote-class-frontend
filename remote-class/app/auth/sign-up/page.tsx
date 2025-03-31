@@ -13,12 +13,19 @@ import CommonButton from '@/app/components/common/Button/CommonButton';
 import CustomTextField from '@/app/components/common/CustomTextField';
 import { useSignupMutation } from '@/app/services/api/apiSlice';
 import { useState } from 'react';
+import { useRouter } from "next/navigation";
 
 
 
 export default function Home() {
+    const router = useRouter();
+  
     const handleBackClick = () => {
         console.log("Back button click")
+    }
+
+    const goToLogin = () => {
+      router.push("/auth/login");
     }
     return (
          <Grid  height="100vh" sx={{backgroundColor:"var(--primary-white)"}} py={"3rem"} px={"2rem"}>
@@ -39,7 +46,7 @@ export default function Home() {
           color: "var(--redish-orange)", 
            fontSize: "1.3rem", 
            fontWeight:"var(--fontweight-medium)",
-          }}  >Go here</Button>
+          }} onClick={goToLogin} >Go here</Button>
         </Grid>
         </Grid>
     );
@@ -65,8 +72,6 @@ export default function Home() {
       collegeCode: "",
       password: "",
     });
-
-    console.log(formData)
 
     const handleChange = (field: keyof typeof formData, value: string) => {
       setFormData((prev: typeof formData) => ({ ...prev, [field]: value }));

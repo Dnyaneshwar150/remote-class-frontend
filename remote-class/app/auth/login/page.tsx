@@ -7,11 +7,12 @@ import RemoteClassLogo from "@/app/components/icons/RemoteClassLogo";
 import { Button, Grid } from "@mui/material";
 import CustomTextField from '@/app/components/common/CustomTextField';
 import CommonButton from '@/app/components/common/Button/CommonButton';
-import router from 'next/router';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
 
+    const router = useRouter();
 
     const [formData, setFormData] = useState({
       email: "",
@@ -24,6 +25,10 @@ export default function Home() {
     }
     const handleCreateNew = () => {
         router.push("/auth/sign-up");
+    }
+
+    const handleStudentLogin = () => {
+      router.push("/auth/login/student")
     }
     
     const handleChange = (field: keyof typeof formData, value: string) => {
@@ -54,6 +59,18 @@ export default function Home() {
            fontSize: "1.3rem", 
            fontWeight:"var(--fontweight-medium)",
           }}  >Create new</Button>
+        </Grid>
+        <Grid container justifyContent={"center"} mt={"3rem"}>
+            <Grid item fontSize={"1.25rem"} fontWeight={"var(--fontweight-medium)"}>You are Student?</Grid>
+            <Button variant="text" 
+            onClick={handleStudentLogin}
+             sx={{
+         height: "1.3rem",
+          textTransform: "none", 
+          color: "var(--redish-orange)", 
+           fontSize: "1.3rem", 
+           fontWeight:"var(--fontweight-medium)",
+          }} >Go here</Button>
         </Grid>
         </Grid>
     );
