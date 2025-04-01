@@ -2,11 +2,12 @@
 
 import BackButton from '@/app/components/common/Button/BackButton';
 import { Button, Grid } from "@mui/material";
+import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
+
 
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import SchoolIcon from '@mui/icons-material/School';
-import ClassIcon from '@mui/icons-material/Class';
 import PaymentIcon from '@mui/icons-material/Payment';
 import LockIcon from '@mui/icons-material/Lock';
 import CommonButton from '@/app/components/common/Button/CommonButton';
@@ -61,15 +62,16 @@ export default function Home() {
     const [signup] = useSignupMutation();
 
    const handleSignup = async () => {
-  signup(formData); // No need for try/catch 
+  signup(formData); 
     };
 
     const [formData, setFormData] = useState({
-      fullName: "",
+      firstName: "",
+      lastName:"",
       email: "",
-      college: "",
-      classes: "",
+      phoneNumber:"",
       collegeCode: "",
+      department:"",
       password: "",
     });
 
@@ -81,11 +83,13 @@ export default function Home() {
 
     return (
         <Grid container flexDirection={"column"} gap={"2rem"} py={"2rem"}>      
-       <CustomTextField label="Full Name" icon={<PermIdentityIcon sx={{ fontSize: "2.5rem" }} />} value={formData.fullName} onChange={(value) => handleChange("fullName", value)} />
+       <CustomTextField label="First Name" icon={<PermIdentityIcon sx={{ fontSize: "2.5rem" }} />} value={formData.firstName} onChange={(value) => handleChange("firstName", value)} />
+       <CustomTextField label="Last Name" icon={<PermIdentityIcon sx={{ fontSize: "2.5rem" }} />} value={formData.lastName} onChange={(value) => handleChange("lastName", value)} />
       <CustomTextField label="Email address" icon={<MailOutlineIcon sx={{ fontSize: "2.5rem" }} />} value={formData.email} onChange={(value) => handleChange("email", value)} />
-      <CustomTextField label="Select college" icon={<SchoolIcon sx={{ fontSize: "2.5rem" }} />} value={formData.college} onChange={(value) => handleChange("college", value)} />
-      <CustomTextField label="Select classes" icon={<ClassIcon sx={{ fontSize: "2.5rem" }} />} value={formData.classes} onChange={(value) => handleChange("classes", value)} />
+      <CustomTextField label="Phone No." icon={<PhoneIphoneIcon sx={{ fontSize: "2.5rem" }} />} value={formData.phoneNumber} onChange={(value) => handleChange("phoneNumber", value)} />
       <CustomTextField label="Unique college code" icon={<PaymentIcon sx={{ fontSize: "2.5rem" }} />} value={formData.collegeCode} onChange={(value) => handleChange("collegeCode", value)} />
+      <CustomTextField label="Select department" icon={<SchoolIcon sx={{ fontSize: "2.5rem" }} />} value={formData.department} onChange={(value) => handleChange("department", value)} />   
+      {/* Todo:add autoComplete */}
       <CustomTextField type="password" label="Password" icon={<LockIcon sx={{ fontSize: "2.5rem" }} />} value={formData.password} onChange={(value) => handleChange("password", value)} />
 
             <CommonButton label={"Sign up"} onClick={handleSignup} sxStyles={{backgroundColor:"var(--amber)", color:"var(--black)",  border:"2px solid var(--black)" ,borderBottom:"4.5px solid var(--black)" ,borderRadius: "1.25rem" ,     

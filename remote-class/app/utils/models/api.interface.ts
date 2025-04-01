@@ -24,12 +24,13 @@ export interface LoginPayload {
   }
 
   export interface SignupPayload {
-    fullName: string;
-    email: string;
-    college: string;
-    classes: string;
+    firstName: string;
+    lastName: string;
     collegeCode: string;
+    email: string;
     password: string;
+    phoneNumber: string;
+    department:string;
   }
 
   export interface SignupResponse {
