@@ -10,6 +10,9 @@ import { useState } from "react";
 import CustomTextField from "@/app/components/common/CustomTextField";
 import CommonButton from "@/app/components/common/Button/CommonButton";
 import { useStudentLoginMutation } from "@/app/services/api/apiSlice";
+import { StudentLoginResponse } from "@/app/utils/models/api.interface";
+import { toast } from "react-hot-toast";
+
 
 export default function Home ()   {
     const [open, setOpen] = useState(true);
@@ -23,9 +26,22 @@ export default function Home ()   {
       const [signup] = useStudentLoginMutation();
       
          
-      const handleSignIn = () => {
-        signup(formData); 
-      }
+      const handleSignIn = async () => {
+        try {
+          const response: StudentLoginResponse = await signup(formData).unwrap();
+      
+          if (response.success) {
+            toast.success("Login successful! 🎉");
+            localStorage.setItem("authToken", response.data.token);
+            setOpen(false);
+          } else {
+            toast.error(response.message || "Login failed. ❌");
+          }
+        } catch {
+          toast.error("Login failed. Please try again. ❌");
+        }
+      };
+      
 
     return (
         <Grid

@@ -6,6 +6,8 @@ import { Styledroot } from "./Styledroot";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import { Box, Container } from "@mui/material";
+import { Toaster } from "react-hot-toast";
+
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -42,7 +44,8 @@ export default function RootLayout({
 
             </Box>
 
-
+            <Toaster   position="top-center" 
+                   reverseOrder={false}  />
         </AppRouterCacheProvider> 
         </Provider>
 

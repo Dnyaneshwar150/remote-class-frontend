@@ -14,8 +14,10 @@ import CommonButton from '@/app/components/common/Button/CommonButton';
 import CustomTextField from '@/app/components/common/CustomTextField';
 import { useSignupMutation } from '@/app/services/api/apiSlice';
 import { useState } from 'react';
+import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-
+import { SignupPayload } from '@/app/utils/models/api.interface';
+import router from 'next/router';
 
 
 export default function Home() {
@@ -57,12 +59,26 @@ export default function Home() {
 
 
   
-  const SignupForm = () => {
-
+ const SignupForm = () => {
+    // const [signup, { isLoading, isError, error }] = useSignupMutation();
     const [signup] = useSignupMutation();
 
-   const handleSignup = async () => {
-  signup(formData); 
+
+    const handleSignup = async (formData: SignupPayload) => {
+      try {
+        const response = await signup(formData).unwrap();
+    
+        if (!response.success) {
+          toast.error(response.message || "Signup failed ❌");
+          return;
+        }
+    
+        toast.success(response.message || "Signup successful 🎉");
+        localStorage.setItem("authToken", response.data.token);
+        router.push("/dashboard/teacher");
+      } catch  {
+        toast.error("Signup failed. Please try again ❌");
+      }
     };
 
     const [formData, setFormData] = useState({
@@ -92,7 +108,7 @@ export default function Home() {
       {/* Todo:add autoComplete */}
       <CustomTextField type="password" label="Password" icon={<LockIcon sx={{ fontSize: "2.5rem" }} />} value={formData.password} onChange={(value) => handleChange("password", value)} />
 
-            <CommonButton label={"Sign up"} onClick={handleSignup} sxStyles={{backgroundColor:"var(--amber)", color:"var(--black)",  border:"2px solid var(--black)" ,borderBottom:"4.5px solid var(--black)" ,borderRadius: "1.25rem" ,     
+            <CommonButton label={"Sign up"} onClick={() => handleSignup(formData)} sxStyles={{backgroundColor:"var(--amber)", color:"var(--black)",  border:"2px solid var(--black)" ,borderBottom:"4.5px solid var(--black)" ,borderRadius: "1.25rem" ,     
  }}/>
        </Grid>
     )

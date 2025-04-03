@@ -34,8 +34,13 @@ export interface LoginPayload {
   }
 
   export interface SignupResponse {
+    success: boolean;
     message: string;
-    userId: string;
+    data: {
+      _id: string;
+      email: string;
+      token: string;
+    };
   }
 
   export interface StudentLoginPayload {
@@ -44,10 +49,11 @@ export interface LoginPayload {
   }
 
   export interface StudentLoginResponse {
-    token: string;  
-     user: {
-    id: string;
-    name: string;
-    email: string;
-  };
+    success: boolean;
+    message: string;
+    data: {
+      _id: string;
+      email: string;
+      token: string;
+    };
   } 

@@ -10,6 +10,10 @@ import CommonButton from '@/app/components/common/Button/CommonButton';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLoginMutation } from '@/app/services/api/apiSlice';
+import { toast } from "react-hot-toast";
+import { LoginPayload, LoginResponse } from '@/app/utils/models/api.interface';
+
+
 
 export default function Home() {
 
@@ -22,7 +26,6 @@ export default function Home() {
       email: "",
       password: "",
     });
-    const [error, setError] = useState<string | null>(null); // Define state for errors
 
     
     const handleCloseClick = () => {
@@ -32,24 +35,25 @@ export default function Home() {
         router.push("/auth/sign-up");
     }
 
-    const handleTeacherSignIn = async () => {
-      setError(""); 
-    
+    const handleTeacherSignIn = async (formData: LoginPayload) => {
       try {
-        const response = await login(formData).unwrap();
+        const response: LoginResponse = await login(formData).unwrap();
     
-        if (!response?.data?.token) {
-          setError("Authentication failed. Please try again.");
+        if (!response.data?.token) {
+          toast.error("Authentication failed. Please try again. ❌");
           return;
         }
     
         localStorage.setItem("authToken", response.data.token); // Prefer cookies in production
+        toast.success("Login successful! 🎉");
         router.push("/dashboard/teacher");
-      } catch {
-        setError(  "Something went wrong. Please try again.");
+      } catch (error) {
+        toast.error(
+          (error as { data?: { message?: string } })?.data?.message ||
+            "Something went wrong. Please try again. ❌"
+        );
       }
     };
-    
     const handleStudentLogin = () => {
       router.push("/auth/login/student")
     }
@@ -69,7 +73,7 @@ export default function Home() {
           <Grid mt={"5rem"}><CustomTextField label={"Email address"} icon={<MailOutlineIcon  sx={{fontSize:"2.5rem"}}/> }  value={formData.email} onChange={(value) => handleChange("email", value)}/> </Grid>
            <Grid mt={"2rem"}><CustomTextField type={"password"} label={"Password"} icon={<LockIcon  sx={{fontSize:"2.5rem"}}/> } value={formData.password} onChange={(value) => handleChange("password", value)} /> </Grid>
 
-          <Grid container pt={"4rem"} justifyContent={"center"}><CommonButton label={"Sign in >"} sxStyles={{width:"27.25rem"}}  onClick={handleTeacherSignIn}/> </Grid>
+          <Grid container pt={"4rem"} justifyContent={"center"}><CommonButton label={"Sign in >"} sxStyles={{width:"27.25rem"}}  onClick={() => handleTeacherSignIn(formData)}/> </Grid>
            
           <Grid container justifyContent={"center"} mt={"3rem"}>
             <Grid item fontSize={"1.25rem"} fontWeight={"var(--fontweight-medium)"}>You are new?</Grid>
@@ -95,11 +99,6 @@ export default function Home() {
            fontWeight:"var(--fontweight-medium)",
           }} >Go here</Button>
         </Grid>
-        {
-          error && (
-            <Grid> Error found</Grid>
-          )
-        }
         </Grid>
     );
 }
