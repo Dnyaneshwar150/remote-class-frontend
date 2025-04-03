@@ -10,14 +10,14 @@ export interface LoginPayload {
   
 
   export interface LoginResponse {
-    id: number;
-    email: string;
-    firstName: string;
-    lastName: string;
-    uuid: string;
-    
+    success: boolean;
+    message: string;
+    data: {
+      _id: string;
+      email: string;
+      token: string;
+    };
   }
-
   export interface ResetPasswordPayload {
     password: { password: string };
     authToken: string;

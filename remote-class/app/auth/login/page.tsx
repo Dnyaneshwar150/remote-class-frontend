@@ -9,24 +9,47 @@ import CustomTextField from '@/app/components/common/CustomTextField';
 import CommonButton from '@/app/components/common/Button/CommonButton';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useLoginMutation } from '@/app/services/api/apiSlice';
 
 export default function Home() {
 
     const router = useRouter();
+    // const [login, { isLoading, error }] = useLoginMutation();   //todo add toastify
+    const [login] = useLoginMutation();   //todo add toastify
+    
 
     const [formData, setFormData] = useState({
       email: "",
       password: "",
     });
-    
+    const [error, setError] = useState<string | null>(null); // Define state for errors
 
+    
     const handleCloseClick = () => {
-        console.log("close button click ")
+        console.log("close button click ")   //TODo: handle back click
     }
     const handleCreateNew = () => {
         router.push("/auth/sign-up");
     }
 
+    const handleTeacherSignIn = async () => {
+      setError(""); 
+    
+      try {
+        const response = await login(formData).unwrap();
+    
+        if (!response?.data?.token) {
+          setError("Authentication failed. Please try again.");
+          return;
+        }
+    
+        localStorage.setItem("authToken", response.data.token); // Prefer cookies in production
+        router.push("/dashboard/teacher");
+      } catch {
+        setError(  "Something went wrong. Please try again.");
+      }
+    };
+    
     const handleStudentLogin = () => {
       router.push("/auth/login/student")
     }
@@ -46,7 +69,7 @@ export default function Home() {
           <Grid mt={"5rem"}><CustomTextField label={"Email address"} icon={<MailOutlineIcon  sx={{fontSize:"2.5rem"}}/> }  value={formData.email} onChange={(value) => handleChange("email", value)}/> </Grid>
            <Grid mt={"2rem"}><CustomTextField type={"password"} label={"Password"} icon={<LockIcon  sx={{fontSize:"2.5rem"}}/> } value={formData.password} onChange={(value) => handleChange("password", value)} /> </Grid>
 
-          <Grid container pt={"4rem"} justifyContent={"center"}><CommonButton label={"Sign in >"} sxStyles={{width:"27.25rem"}}/> </Grid>
+          <Grid container pt={"4rem"} justifyContent={"center"}><CommonButton label={"Sign in >"} sxStyles={{width:"27.25rem"}}  onClick={handleTeacherSignIn}/> </Grid>
            
           <Grid container justifyContent={"center"} mt={"3rem"}>
             <Grid item fontSize={"1.25rem"} fontWeight={"var(--fontweight-medium)"}>You are new?</Grid>
@@ -72,6 +95,11 @@ export default function Home() {
            fontWeight:"var(--fontweight-medium)",
           }} >Go here</Button>
         </Grid>
+        {
+          error && (
+            <Grid> Error found</Grid>
+          )
+        }
         </Grid>
     );
 }

@@ -28,25 +28,47 @@ export default function Home() {
 
 const LogoPage:React.FC<{onNext: ()=> void}> = ({onNext}) => {
   return (
-    <Grid container 
-    height="100vh" 
-    sx={{backgroundColor:"var(--primary-blue)"}} 
-      pb={"4rem"} flexDirection={"column"}
-      alignItems={"center"}  
+    <Grid
+    container
+    height="100vh"
+    sx={{ backgroundColor: "var(--primary-blue)" }}
+    pb={"4rem"}
+    flexDirection="column"
+    alignItems="center"
+  >
+    {/* Centered Content */}
+    <Grid 
+      item 
+      container 
+      justifyContent="center" 
+      flexGrow={1} 
+      textAlign="center"
+      onClick={onNext}
     >
-
-    <Grid  container   justifyContent={"center"} item mt={"25rem"} onClick={onNext}>
-     <Grid container justifyContent={"center"} pb={"1.3rem"} ><RemoteClassLogo /></Grid>
-    <Grid fontWeight={"var(--fontweight-bold)"} fontSize={"2.25rem"} color={"var(--primary-white)"} textAlign={"center"}>REMOTE CLASS</Grid>
+      <Grid container justifyContent="center" alignItems={"end"} pb={"1.3rem"}>
+        <RemoteClassLogo />
+      </Grid>
+      <Grid fontWeight="var(--fontweight-bold)" fontSize="2.25rem" color="var(--primary-white)">
+        REMOTE CLASS
+      </Grid>
     </Grid>
 
-    <Grid item   justifyContent={"center"}  color={"var(--primary-white)"} textAlign={"center"} mt={"auto"}>
-     <Grid fontSize={"1.25rem"} fontWeight={"var(--fontweight-medium)"}>Project by &nbsp;</Grid>
-    <Grid  fontSize={"1.5rem"} fontWeight={"var(--fontweight-bold)"}>Yogita Ilag &nbsp;</Grid>
-    <Grid  fontSize={"1.5rem"} fontWeight={"var(--fontweight-bold)"}>Shivam Telange &nbsp;</Grid>
-    <Grid  fontSize={"1.5rem"} fontWeight={"var(--fontweight-bold)"}>Sanika Deokar</Grid>  
+    {/* Footer Content (Pushed to Bottom) */}
+    <Grid item textAlign="center" color="var(--primary-white)" mt="auto">
+      <Grid fontSize="1.25rem" fontWeight="var(--fontweight-medium)">
+        Project by
+      </Grid>
+      <Grid fontSize="1.5rem" fontWeight="var(--fontweight-bold)">
+        Yogita Ilag
+      </Grid>
+      <Grid fontSize="1.5rem" fontWeight="var(--fontweight-bold)">
+        Shivam Telange
+      </Grid>
+      <Grid fontSize="1.5rem" fontWeight="var(--fontweight-bold)">
+        Sanika Deokar
+      </Grid>
     </Grid>
-</Grid>
+  </Grid>
   )
 }
 
@@ -57,7 +79,7 @@ const StudentPage:React.FC<{onNext: ()=> void}>= ({onNext}) => {
      <Grid container justifyContent={"center"} py={"3rem"}><StudentOnBoardingIcon/></Grid>
     </Grid>
     <Grid item container justifyContent={"center"} color={"var(--black)"} >
-     <Grid container textAlign={"center"} fontSize={"3rem"} fontWeight={"var(--fontweight-extra-bold)"}>We are for Students</Grid>
+     <Grid container justifyContent={"center"} fontSize={"3rem"} fontWeight={"var(--fontweight-extra-bold)"}>We are for Students</Grid>
      <Grid container justifyContent={"center"} fontSize={"1.75rem"} fontWeight={"var(--fontweight-medium)"}>Wireframe is still important for</Grid>
      <Grid container justifyContent={"center"}  textAlign={"center"} fontSize={"1.75rem"} fontWeight={"var(--fontweight-extra-medium)"}>ideation. It will help you to</Grid>
      <Grid  container justifyContent={"center"} textAlign={"center"} fontSize={"1.75rem"} fontWeight={"var(--fontweight-extra-medium)"}>quickly test idea.</Grid>

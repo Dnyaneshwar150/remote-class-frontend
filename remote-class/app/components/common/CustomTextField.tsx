@@ -17,7 +17,7 @@ interface CustomTextFieldProps {
         fullWidth
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        InputProps={{
+            InputProps={{
           startAdornment: <InputAdornment position="start">{icon}</InputAdornment>,
         }}
         sx={{

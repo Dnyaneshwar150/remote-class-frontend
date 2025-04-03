@@ -5,6 +5,7 @@ import "./globals.css";
 import { Styledroot } from "./Styledroot";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
+import { Box, Container } from "@mui/material";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -23,7 +24,25 @@ export default function RootLayout({
       <body className={montserrat.className}>
       <Provider store={store}>
       <AppRouterCacheProvider>
-        <Styledroot>{children}</Styledroot>
+      <Box
+              sx={{
+                position: "relative",
+                minHeight: "100vh",
+                backgroundColor: "var(--dark-grey)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+             <Container
+                maxWidth="sm" 
+              >
+             <Styledroot>{children}</Styledroot>
+              </Container>
+
+            </Box>
+
+
         </AppRouterCacheProvider> 
         </Provider>
 
