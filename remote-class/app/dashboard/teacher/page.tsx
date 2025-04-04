@@ -1,8 +1,26 @@
+"use client";
+
 import { Grid } from "@mui/material";
 import ClassIcon from '@mui/icons-material/Class';
+import { useRouter } from "next/navigation";
 
 
 export default function Home () {
+  const teacherId = 1234
+    const router = useRouter();
+  
+  const handleClassCardClick = () => {
+    router.push(`/dashboard/teacher/classes?teacherId=${teacherId}`);
+
+  }
+
+  const handleAssignmentsCardClick = () => {
+    console.log("assingment card click")
+  }
+
+  const handleResourcesCardClick = () => {
+    console.log("resources card click")
+  }
     return (
         <Grid
         container
@@ -12,7 +30,7 @@ export default function Home () {
           overflow: "hidden",
           margin: 0,
           pt:"4rem",
-          pl:"2rem"
+          pl:"2rem",
         }}
       > 
 
@@ -21,9 +39,9 @@ export default function Home () {
       </Grid>
 
       <Grid container gap={"1rem"}>
-        <StatsCard title="Your Classes" count={5} bgColor="var(--amber)"/>
-         <StatsCard title="Assignments" count={5} bgColor="var(--primary-blue)"/>
-         <StatsCard title="Resources" count={5} bgColor="var(--teal)"/>
+        <StatsCard title="Your Classes" count={5} bgColor="var(--amber)" onClick={handleClassCardClick}/>
+         <StatsCard title="Assignments" count={5} bgColor="var(--primary-blue)" onClick={handleAssignmentsCardClick}/>
+         <StatsCard title="Resources" count={5} bgColor="var(--teal)" onClick={handleResourcesCardClick}/>
          </Grid>
      
      <Grid container flexDirection={"column"}  mt={"3rem"}> 
@@ -39,9 +57,14 @@ export default function Home () {
     )
 }
 
-const StatsCard:React.FC<{title:string,count:number,bgColor:string}> = ({title,bgColor,count}) => {
+const StatsCard:React.FC<{title:string,
+  count:number,
+  bgColor:string,
+  onClick: () => void;
+
+}> = ({title,bgColor,count,onClick}) => {
     return(
-        <Grid width={"12rem"} height={"17.5rem"}>
+        <Grid width={"12rem"} height={"17.5rem"} onClick={onClick} sx={{cursor:"pointer"}}>
   <Grid borderRadius={"1.3rem"} height={"13rem"} border={"2px solid var(--black)"} sx={{backgroundColor:bgColor}} container justifyContent={"center"} alignItems={"center"}>
    <ClassIcon style={{color:"var(--primary-white)", fontSize:"5rem"}}/>
   </Grid>
