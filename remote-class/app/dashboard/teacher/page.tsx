@@ -19,7 +19,8 @@ export default function Home () {
   }
 
   const handleResourcesCardClick = () => {
-    console.log("resources card click")
+    router.push(`/dashboard/teacher/resources?teacherId=${teacherId}`)
+    console.log("resources click")
   }
     return (
         <Grid

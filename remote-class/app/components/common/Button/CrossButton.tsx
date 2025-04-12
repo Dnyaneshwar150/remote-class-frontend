@@ -9,7 +9,6 @@ interface CrossButtonProps {
 const CrossButton: React.FC<CrossButtonProps> = ({ onClick }) => {
   return (
     <Grid container height={"4rem"} width={"4rem"} border={"2px solid var(--black)"} borderRadius={"50%"} onClick={onClick} alignContent={"center"} justifyContent={"center"}
-    
     sx={{
       cursor: "pointer",
       transition: "0.3s",
