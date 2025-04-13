@@ -3,30 +3,24 @@
 import { Grid } from "@mui/material";
 import ClassIcon from '@mui/icons-material/Class';
 import { useRouter } from "next/navigation";
-import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+
 
 export default function Home () {
-  const teacherId = 1234
+  const studentId = 1234
     const router = useRouter();
   
   const handleClassCardClick = () => {
-    router.push(`/dashboard/teacher/classes?teacherId=${teacherId}`);
+    router.push(`/dashboard/student/classes?studentId=${studentId}`);
 
   }
 
   const handleAssignmentsCardClick = () => {
-    router.push(`/dashboard/teacher/resources?teacherId=${teacherId}`)
+    console.log("assingment card click")
   }
 
   const handleResourcesCardClick = () => {
-    router.push(`/dashboard/teacher/resources?teacherId=${teacherId}`)
-    console.log("resources click")
+    router.push(`/dashboard/student/resources?studentId=${studentId}`)
   }
-  
-  const handleStudentCreate = () => {
-    router.push(`/dashboard/teacher/student?teacherId=${teacherId}`)
-  }
-
     return (
         <Grid
         container
@@ -48,13 +42,12 @@ export default function Home () {
         <StatsCard title="Your Classes" count={5} bgColor="var(--amber)" onClick={handleClassCardClick}/>
          <StatsCard title="Assignments" count={5} bgColor="var(--primary-blue)" onClick={handleAssignmentsCardClick}/>
          <StatsCard title="Resources" count={5} bgColor="var(--teal)" onClick={handleResourcesCardClick}/>
-         <StatsCard title="Create Student" count={5} bgColor="var(--white)" onClick={handleStudentCreate} studenCard/>
          </Grid>
      
      <Grid container flexDirection={"column"}  mt={"3rem"}> 
         <Grid item container justifyContent={"space-between"} pr={"2rem"}> 
             <Grid fontSize={"1.25rem"} fontWeight={"var(--fontweight-bold)"}>Message</Grid>          
-            <Grid fontSize={"1.25rem"} fontWeight={"var(--fontweight-bold)"} color={"var(--redish-orange)"}>see all</Grid>
+            {/* <Grid fontSize={"1.25rem"} fontWeight={"var(--fontweight-bold)"} color={"var(--redish-orange)"}>see all</Grid> */}
         </Grid> 
 
         <ChatCard  studentName={"Archana Dube"} subLabel={"EJ5I"} count={12} />
@@ -68,14 +61,12 @@ const StatsCard:React.FC<{title:string,
   count:number,
   bgColor:string,
   onClick: () => void;
-  studenCard?:boolean;
 
-}> = ({title,bgColor,count,onClick,studenCard}) => {
+}> = ({title,bgColor,count,onClick}) => {
     return(
         <Grid width={"12rem"} height={"17.5rem"} onClick={onClick} sx={{cursor:"pointer"}}>
   <Grid borderRadius={"1.3rem"} height={"13rem"} border={"2px solid var(--black)"} sx={{backgroundColor:bgColor}} container justifyContent={"center"} alignItems={"center"}>
-    {studenCard ? <PersonAddAlt1Icon style={{color:"var(--dark-grey)" , fontSize:"5rem"}}  /> : (   <ClassIcon style={{color:"var(--primary-white)", fontSize:"5rem"}}/>) }
-
+   <ClassIcon style={{color:"var(--primary-white)", fontSize:"5rem"}}/>
   </Grid>
   <Grid color={"var(--black)"} fontWeight={"var(--fontweight-extra-bold)"} mt={"0.6rem"} fontSize={"1.5rem"}>{title}</Grid>
 <Grid fontWeight={"var(--fontweight-bold)"}  color={"var(--light-grey)"} >Total- &nbsp;{count} </Grid>

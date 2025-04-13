@@ -12,9 +12,14 @@ import CommonButton from "@/app/components/common/Button/CommonButton";
 import { useStudentLoginMutation } from "@/app/services/api/apiSlice";
 import { StudentLoginResponse } from "@/app/utils/models/api.interface";
 import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
+
 
 
 export default function Home ()   {
+
+  const router = useRouter();
+
     const [open, setOpen] = useState(true);
     const [formData, setFormData] = useState({ email: "", password: "" });
 
@@ -23,17 +28,18 @@ export default function Home ()   {
       };
 
       
-      const [signup] = useStudentLoginMutation();
+      const [login] = useStudentLoginMutation();
       
          
       const handleSignIn = async () => {
         try {
-          const response: StudentLoginResponse = await signup(formData).unwrap();
+          const response: StudentLoginResponse = await login(formData).unwrap();
       
           if (response.success) {
             toast.success("Login successful! 🎉");
             localStorage.setItem("authToken", response.data.token);
             setOpen(false);
+            router.push("/dashboard/student");
           } else {
             toast.error(response.message || "Login failed. ❌");
           }
