@@ -1,25 +1,39 @@
 "use client";
 
 import BackButton from '@/app/components/common/Button/BackButton';
-import { Button, Grid, InputAdornment, TextField } from "@mui/material";
+import { Button, Grid } from "@mui/material";
+import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
+
 
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import SchoolIcon from '@mui/icons-material/School';
-import ClassIcon from '@mui/icons-material/Class';
 import PaymentIcon from '@mui/icons-material/Payment';
 import LockIcon from '@mui/icons-material/Lock';
 import CommonButton from '@/app/components/common/Button/CommonButton';
-
+import CustomTextField from '@/app/components/common/CustomTextField';
+import { useSignupMutation } from '@/app/services/api/apiSlice';
+import { useState } from 'react';
+import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { SignupPayload } from '@/app/utils/models/api.interface';
+import router from 'next/router';
+import LayoutWrapper from '@/app/components/LayoutWrapper';
 
 
 export default function Home() {
+    const router = useRouter();
+  
     const handleBackClick = () => {
-        console.log("Back button click")
+      router.back(); 
+    };
+
+    const goToLogin = () => {
+      router.push("/auth/login");
     }
     return (
-         <Grid  height="100vh" sx={{backgroundColor:"var(--primary-white)"}} py={"3rem"} px={"2rem"}>
-            <Grid container item justifySelf={"start"}>
+          <LayoutWrapper sx={{backgroundColor:"var(--primary-white)"}}>
+          <Grid container item justifySelf={"start"}>
             <BackButton onClick={handleBackClick}/>
            </Grid>
           <Grid mt={"4.33rem"} container item fontSize={"3rem"} fontWeight={"var(--fontweight-extra-bold)"} color={"var(--black)"}>Teacher Sign up  </Grid> 
@@ -36,83 +50,63 @@ export default function Home() {
           color: "var(--redish-orange)", 
            fontSize: "1.3rem", 
            fontWeight:"var(--fontweight-medium)",
-          }}  >Go here</Button>
+          }} onClick={goToLogin} >Go here</Button>
         </Grid>
-        </Grid>
+             </LayoutWrapper>
+            
     );
 
 }
 
-interface CustomTextFieldProps {
-    label: string;
-    icon: JSX.Element;
-    type?:string;
-  }
-  
-const CustomTextField: React.FC<CustomTextFieldProps> = ({ label, icon , type }) => {
+
+ const SignupForm = () => {
+    const [signup] = useSignupMutation();
+
+    const handleSignup = async (formData: SignupPayload) => {
+      try {
+        const response = await signup(formData).unwrap();
+    
+        if (!response.success) {
+          toast.error(response.message || "Signup failed ❌");
+          return;
+        }
+    
+        toast.success(response.message || "Signup successful 🎉");
+        localStorage.setItem("authToken", response.data.token);
+        router.push("/dashboard/teacher");
+      } catch  {
+        toast.error("Signup failed. Please try again ❌");
+      }
+    };
+
+    const [formData, setFormData] = useState({
+      firstName: "",
+      lastName:"",
+      email: "",
+      phoneNumber:"",
+      collegeCode: "",
+      department:"",
+      password: "",
+    });
+
+    const handleChange = (field: keyof typeof formData, value: string) => {
+      setFormData((prev: typeof formData) => ({ ...prev, [field]: value }));
+    };
+
+   
+
     return (
-      <TextField
-        label={label}
-        variant="outlined"
-        placeholder={label}
-        type={type && type}
-        fullWidth
-        InputProps={{
-          startAdornment: <InputAdornment position="start">{icon}</InputAdornment>,
-        }}
-        sx={{
-            "& .MuiOutlinedInput-root": {
-              borderRadius: "1.25rem", 
-              border: "2px solid var(--black)", 
-            },
-            "&.Mui-focused": {
-                borderWidth: "3px", 
-                borderColor: "var(--black)", 
-              },
-              "&:hover": {
-                borderColor: "var(--black)",
-              },
-            "& .MuiInputLabel-root": {
-              fontSize: "0",
-            },
-            "& .MuiInputLabel-root.Mui-focused": {
-              color: "var(--black)", 
-            },
+        <Grid container flexDirection={"column"} gap={"1rem"} py={"2rem"}>      
+       <CustomTextField label="First Name" icon={<PermIdentityIcon sx={{ fontSize: "2.5rem" }} />} value={formData.firstName} onChange={(value) => handleChange("firstName", value)} />
+       <CustomTextField label="Last Name" icon={<PermIdentityIcon sx={{ fontSize: "2.5rem" }} />} value={formData.lastName} onChange={(value) => handleChange("lastName", value)} />
+      <CustomTextField label="Email address" icon={<MailOutlineIcon sx={{ fontSize: "2.5rem" }} />} value={formData.email} onChange={(value) => handleChange("email", value)} />
+      <CustomTextField label="Phone No." icon={<PhoneIphoneIcon sx={{ fontSize: "2.5rem" }} />} value={formData.phoneNumber} onChange={(value) => handleChange("phoneNumber", value)} />
+      <CustomTextField label="Unique college code" icon={<PaymentIcon sx={{ fontSize: "2.5rem" }} />} value={formData.collegeCode} onChange={(value) => handleChange("collegeCode", value)} />
+      <CustomTextField label="Select department" icon={<SchoolIcon sx={{ fontSize: "2.5rem" }} />} value={formData.department} onChange={(value) => handleChange("department", value)} />   
+      {/* Todo:add autoComplete */}
+      <CustomTextField type="password" label="Password" icon={<LockIcon sx={{ fontSize: "2.5rem" }} />} value={formData.password} onChange={(value) => handleChange("password", value)} />
 
-            "& .MuiOutlinedInput-input::placeholder": {
-                color: "var(--black)", 
-                fontSize: "1.75rem", 
-                fontWeight: "var(--fontweight-medium)", 
-                opacity: 1, 
-              },
-
-              "& .MuiOutlinedInput-notchedOutline": {
-                border: "none", 
-              },
-              "& .MuiOutlinedInput-input:focus": {
-                fontSize: "1.75rem", 
-                fontWeight: "var(--fontweight-medium)", 
-              },
-             
-          }}
-      />
-    );
-  };
-
-  
-  const SignupForm = () => {
-    const handleSignup = () => {
-        console.log("sign up click")
-    }
-    return (
-        <Grid container flexDirection={"column"} gap={"2rem"} py={"2rem"}>      
-            <CustomTextField label={"Full Name"} icon={<PermIdentityIcon  sx={{fontSize:"2.5rem"}}/> } />
-            <CustomTextField label={"Email address"} icon={<MailOutlineIcon  sx={{fontSize:"2.5rem"}}/> } />
-            <CustomTextField label={"Select college"} icon={<SchoolIcon  sx={{fontSize:"2.5rem"}}/> } />
-            <CustomTextField label={"Select classes"} icon={<ClassIcon  sx={{fontSize:"2.5rem"}}/> } />
-            <CustomTextField label={"Unique college code"} icon={<PaymentIcon  sx={{fontSize:"2.5rem"}}/> } />
-            <CustomTextField type={"password"} label={"Password"} icon={<LockIcon  sx={{fontSize:"2.5rem"}}/> } />
-            <CommonButton label={"Sign up"} onClick={handleSignup} sxStyles={{backgroundColor:"var(--amber)", color:"var(--black)",  border:"2px solid var(--black)" ,borderBottom:"4.5px solid var(--black)" ,borderRadius: "1.25rem" ,     
+            <CommonButton label={"Sign up"} onClick={() => handleSignup(formData)} sxStyles={{backgroundColor:"var(--amber)", color:"var(--black)",  border:"2px solid var(--black)" ,borderBottom:"4.5px solid var(--black)" ,borderRadius: "1.25rem" ,     
  }}/>
        </Grid>
     )
