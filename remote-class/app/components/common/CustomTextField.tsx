@@ -14,6 +14,7 @@ interface CustomTextFieldProps {
         variant="outlined"
         placeholder={label}
         type={type && type}
+        autoComplete="off"
         fullWidth
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -21,38 +22,27 @@ interface CustomTextFieldProps {
           startAdornment: <InputAdornment position="start">{icon}</InputAdornment>,
         }}
         sx={{
-            "& .MuiOutlinedInput-root": {
-              borderRadius: "1.25rem", 
-              border: "2px solid var(--black)", 
-            },
-            "&.Mui-focused": {
-                borderWidth: "3px", 
-                borderColor: "var(--black)", 
-              },
-              "&:hover": {
-                borderColor: "var(--black)",
-              },
-            "& .MuiInputLabel-root": {
-              fontSize: "0",
-            },
-            "& .MuiInputLabel-root.Mui-focused": {
-              color: "var(--black)", 
-            },
-
-            "& .MuiOutlinedInput-input::placeholder": {
-                color: "var(--black)", 
-                fontSize: "1.75rem", 
-                fontWeight: "var(--fontweight-medium)", 
-                opacity: 1, 
-              },
-
-              "& .MuiOutlinedInput-notchedOutline": {
-                border: "none", 
-              },
-              "& .MuiOutlinedInput-input:focus": {
-                fontSize: "1.75rem", 
-                fontWeight: "var(--fontweight-medium)", 
-              },
+          "& .MuiOutlinedInput-root": {
+            borderRadius: "1.25rem",
+            border: "2px solid var(--black)",
+            fontSize: "1.75rem",
+            fontWeight: "var(--fontweight-medium)",
+          },
+          "&:hover .MuiOutlinedInput-root": {
+            borderColor: "var(--black)",
+          },
+          "& .MuiInputLabel-root": {
+            display: "none", // completely remove label from layout
+          },
+          "& .MuiOutlinedInput-notchedOutline": {
+            border: "none", // remove double outline border
+          },
+          "& .MuiOutlinedInput-input::placeholder": {
+            color: "var(--black)",
+            fontSize: "1.75rem",
+            fontWeight: "var(--fontweight-medium)",
+            opacity: 1,
+          },
              
           }}
       />

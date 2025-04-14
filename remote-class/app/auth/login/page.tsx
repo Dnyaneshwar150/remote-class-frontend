@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import { useLoginMutation } from '@/app/services/api/apiSlice';
 import { toast } from "react-hot-toast";
 import { LoginPayload, LoginResponse } from '@/app/utils/models/api.interface';
+import LayoutWrapper from '@/app/components/LayoutWrapper';
 
 
 
@@ -29,7 +30,7 @@ export default function Home() {
 
     
     const handleCloseClick = () => {
-        console.log("close button click ")   //TODo: handle back click
+      router.back(); 
     }
     const handleCreateNew = () => {
         router.push("/auth/sign-up");
@@ -64,8 +65,8 @@ export default function Home() {
   
 
     return (
-    <Grid height="100vh" sx={{backgroundColor:"var(--primary-white)"}} py={"3rem"} px={"2rem"}>
-         <Grid container item justifySelf={"start"}>
+      <LayoutWrapper  sx={{backgroundColor:"var(--primary-white)"}} py={"3rem"} px={"2rem"}>
+      <Grid container item justifySelf={"start"}>
             <CrossButton onClick={handleCloseClick}/>
            </Grid>
            <Grid container justifyContent={"center"} mt={"3.5rem"}><RemoteClassLogo/></Grid>
@@ -98,7 +99,7 @@ export default function Home() {
            fontSize: "1.3rem", 
            fontWeight:"var(--fontweight-medium)",
           }} >Go here</Button>
-        </Grid>
-        </Grid>
+        </Grid> </LayoutWrapper>
+        
     );
 }

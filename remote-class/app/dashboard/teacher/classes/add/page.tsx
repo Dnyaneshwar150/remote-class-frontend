@@ -3,10 +3,15 @@
 import CommonButton from "@/app/components/common/Button/CommonButton";
 import CrossButton from "@/app/components/common/Button/CrossButton";
 import { CustomInputField } from "@/app/components/common/CustomInputField";
+import LayoutWrapper from "@/app/components/LayoutWrapper";
 import { Grid } from "@mui/material";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 
 export default function Home() {
+  const router = useRouter();
+
   const [classDetails, setClassDetails] = useState({
     name: "",
     year: "",
@@ -22,27 +27,16 @@ export default function Home() {
     }));
   };
 
-  const handleBackClick = () => {
-    console.log("back button");
-  };
+
   const handleShareClassesClick = () => {
     console.log("share classes cLick")
   }
 
   return (
-    <Grid
-    container
-    direction="column"
-    height="100vh"
-    sx={{
-      backgroundColor: "var(--primary-white)",
-      margin: 0,
-      px: "2rem",
-      pt: "2rem", 
-    }}
-  >
-    <Grid item alignSelf="flex-start">
-      <CrossButton onClick={handleBackClick} />
+    
+     <LayoutWrapper>
+     <Grid item alignSelf="flex-start">
+      <CrossButton onClick={() => router.back()} />
     </Grid>
   
     <Grid
@@ -103,7 +97,8 @@ export default function Home() {
         />
       </Grid>
     </Grid>
-  </Grid>
+     </LayoutWrapper>
+    
   
   );
 }

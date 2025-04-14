@@ -5,7 +5,7 @@ import "./globals.css";
 import { Styledroot } from "./Styledroot";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import { Toaster } from "react-hot-toast";
 
 
@@ -36,11 +36,8 @@ export default function RootLayout({
                 alignItems: "center",
               }}
             >
-             <Container
-                maxWidth="sm" 
-              >
+            
              <Styledroot>{children}</Styledroot>
-              </Container>
 
             </Box>
 

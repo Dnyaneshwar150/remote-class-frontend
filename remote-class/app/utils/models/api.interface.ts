@@ -109,6 +109,7 @@ export interface CreateStudentResponse {
 export interface AddResourcePayload {
   title: string;
   year: string;
+  subject: string;
   file: File;
 }
 
@@ -116,7 +117,7 @@ export interface UploadAssignmentPayload {
   file: File;
   title: string;
   description: string;
-  deadline: string; // or Date if backend accepts ISO
+  deadline: string;
   year: string;
   division: string;
 }
@@ -141,4 +142,30 @@ export interface CreateClassPayload {
   name: string;
   year: string;
   division: string;
+}
+
+export interface TeacherDashboardResponse {
+  success: boolean;
+  data: {
+    teacherId: string;
+    teacherName: string;
+    classCount: number;
+    assignmentCount: number;
+    resourceCount: number;
+  };
+}
+
+export interface TeacherAssignment {
+  file: string;
+  title: string;
+  description: string;
+  deadline: string;
+  year: string;
+  division: string;
+}
+
+export interface TeacherAssignmentsResponse {
+  success: boolean;
+  message: string;
+  data: TeacherAssignment[];
 }

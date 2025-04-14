@@ -12,6 +12,8 @@ import {
   SignupResponse,
   StudentLoginPayload,
   StudentLoginResponse,
+  TeacherAssignmentsResponse,
+  TeacherDashboardResponse,
   TeacherResourcesResponse,
   UploadAssignmentPayload,
 } from "@/app/utils/models/api.interface";
@@ -98,12 +100,13 @@ export const remoteClassApi = createApi({
         method: "GET",
       }),
     }),
-
+    //uplaod assingment
     addResource: builder.mutation<void, AddResourcePayload>({
-      query: ({ title, year, file }) => {
+      query: ({ title, year, file, subject }) => {
         const formData = new FormData();
         formData.append("title", title);
         formData.append("year", year);
+        formData.append("subject", subject);
         formData.append("file", file);
 
         return {
@@ -114,6 +117,15 @@ export const remoteClassApi = createApi({
       },
     }),
 
+    // getAssignmentList
+    getTeacherAssignment: builder.query<TeacherAssignmentsResponse, void>({
+      query: () => ({
+        url: "/assignment/teacher",
+        method: "GET",
+      }),
+    }),
+
+    //upload assignment
     uploadAssignment: builder.mutation<void, UploadAssignmentPayload>({
       query: ({ file, title, description, deadline, year, division }) => {
         const formData = new FormData();
@@ -146,6 +158,13 @@ export const remoteClassApi = createApi({
         body: data, // The payload to be sent in the body of the POST request
       }),
     }),
+    //dashboard
+    getTeacherDashboard: builder.query<TeacherDashboardResponse, void>({
+      query: () => ({
+        url: "/dashboard/teacher",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -157,5 +176,10 @@ export const {
   useSignupMutation,
   useStudentLoginMutation,
   useCreateStudentMutation,
+  useGetTeacherDashboardQuery,
+  useGetClassesQuery,
   useGetTeacherResourcesQuery,
+  useAddResourceMutation,
+  useUploadAssignmentMutation,
+  useGetTeacherAssignmentQuery,
 } = remoteClassApi;

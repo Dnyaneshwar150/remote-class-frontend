@@ -5,47 +5,70 @@ import CrossButton from "@/app/components/common/Button/CrossButton";
 import { CustomInputField } from "@/app/components/common/CustomInputField";
 import CommonButton from "@/app/components/common/Button/CommonButton";
 import { useState } from "react";
+import LayoutWrapper from "@/app/components/LayoutWrapper";
+import { useRouter } from "next/navigation";
+import UploadDocumentField from "@/app/components/UploadDocumentField";
+import { toast } from "react-hot-toast";
+import { useAddResourceMutation } from "@/app/services/api/apiSlice";
+
+
 
 export default function AddAssignmentPage() {
+  const router = useRouter(); 
+  const [addResource] = useAddResourceMutation();
+   
   const [resourceDetails, setResourceDetails] = useState({
     title: "",
     className: "",
     subject: "",
-    document: "",
+    document: null as File | null, 
   });
 
-  const handleChange = (field: keyof typeof resourceDetails, value: string) => {
+  const handleShareClick = async () => {
+    console.log("Share button click")
+    if (!resourceDetails.title || !resourceDetails.className || !resourceDetails.document) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+
+    try {
+      await addResource({
+        title: resourceDetails.title,
+        year: resourceDetails.className,
+        subject: resourceDetails.subject,
+        file: resourceDetails.document,
+      }).unwrap();
+
+      toast.success("Resource shared successfully!");
+      router.back();
+
+      setResourceDetails({
+        title: "",
+        className: "",
+        subject: "",
+        document: null,
+      });
+      router.back();
+    } catch  {
+      toast.error("Failed to share resource.");
+    }
+  };
+
+  const handleChange = (
+    field: keyof typeof resourceDetails,
+    value: string | File | null
+  ) => {
     setResourceDetails((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
 
-  const handleBackClick = () => {
-    console.log("Back clicked");
-  };
-
-  const handleShareClick = () => {
-    console.log("Shared Resources", resourceDetails);
-  };
 
   return (
-    <Grid
-  container
-  direction="column"
-  sx={{
-    backgroundColor: "var(--primary-white)",
-    margin: 0,
-    pt: "4rem",
-    px: "2rem",
-    height: "100vh",        
-    overflowY: "auto",      
-    overflowX: "hidden",    
-    boxSizing: "border-box" 
-  }}
->
-      <Grid item alignSelf="flex-start">
-        <CrossButton onClick={handleBackClick} />
+  <LayoutWrapper>
+  <Grid item alignSelf="flex-start">
+        <CrossButton onClick={()=>router.back()} />
       </Grid>
 
       <Grid
@@ -97,25 +120,23 @@ export default function AddAssignmentPage() {
             onChange={(value) => handleChange("subject", value)}
           />
         </Grid>
-
-      
-
         <Grid item>
-          <CustomInputField
-            label="Upload documents"
+        <UploadDocumentField
+            label='Upload documents'
             value={resourceDetails.document}
-            onChange={(value) => handleChange("document", value)}
+            onChange={(value) => handleChange("document", value)} // ✅ File object
           />
         </Grid>
 
         <Grid item container justifyContent="center">
           <CommonButton
-            label="Share"
+          label={"Share Resource"}
             onClick={handleShareClick}
             sxStyles={{ width: "100%" }}
           />
         </Grid>
       </Grid>
-    </Grid>
+  </LayoutWrapper>
+      
   );
 }

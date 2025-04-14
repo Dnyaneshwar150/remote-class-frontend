@@ -4,29 +4,21 @@ import { Grid, Typography, Box, Tab, Tabs } from "@mui/material";
 import React, { useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import { useRouter, useSearchParams } from "next/navigation";
+import LayoutWrapper from "@/app/components/LayoutWrapper";
+import { useGetTeacherAssignmentQuery, useGetTeacherResourcesQuery } from "@/app/services/api/apiSlice";
+import Loader from "@/app/components/common/Loader";
+import BackButton from '@/app/components/common/Button/BackButton';
 
-
-const assignments = [
-    { title: "Assignment 1", className: "Class A", color: "#FACC15" },
-    { title: "Assignment 2", className: "Class B", color: "#ffffff" },
-    { title: "Assignment 3", className: "Class C", color: "#F87171" },
-  ];
-  
-  const resources = [
-    { title: "Resource 1", className: "Class A", color: "#FACC15", downloadUrl: "/downloads/resource1.pdf" },
-    { title: "Resource 2", className: "Class B", color: "#ffffff", downloadUrl: "/downloads/resource2.pdf" },
-    { title: "Resource 3", className: "Class C", color: "#F87171", downloadUrl: "/downloads/resource3.pdf" },
-    { title: "Resource 4", className: "Class D", color: "#2dd4bf", downloadUrl: "/downloads/resource4.pdf" },
-    { title: "Resource 5", className: "Class E", color: "#ffffff", downloadUrl: "/downloads/resource5.pdf" },
-  ];
 
 export default function Home() {
     const router = useRouter();
     const searchParams = useSearchParams();
         const teacherId = searchParams.get("teacherId");
+        const {data:resourcesData,isLoading:isResourcesDataLoading} = useGetTeacherResourcesQuery();
+        const {data:assignmentData,isLoading:assignmentDataLoading} = useGetTeacherAssignmentQuery();
+        const classColors = ["#ffffff", "#FFC107", "#00BCD4", "#4CAF50"]; 
 
     const [tabIndex, setTabIndex] = useState(1); 
-    console.log(tabIndex);
     
     
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
@@ -42,18 +34,11 @@ export default function Home() {
   };
 
   return (
-    <Grid
-      container
-      direction="column"
-      height="100vh"
-      sx={{
-        backgroundColor: "var(--primary-white)",
-        padding: "2rem",
-        boxSizing: "border-box",
-        position: "relative",
-      }}
-    >
-      <Grid container flexDirection={"column"} > <Grid item fontSize={"3.6rem"} fontWeight={"var(--fontweight-extra-bold)"}>Your</Grid>
+       <LayoutWrapper>
+        <Grid container item justifySelf={"start"} mb={"1rem"}>
+                    <BackButton onClick={() => router.back()}/>
+                   </Grid>
+<Grid container flexDirection={"column"} > <Grid item fontSize={"3.6rem"} fontWeight={"var(--fontweight-extra-bold)"}>Your</Grid>
       <Grid item fontSize={"3.6rem"} fontWeight={"var(--fontweight-extra-bold)"}>{tabIndex === 0 ? 'Assignments' : 'Resources'}</Grid> 
       </Grid>
 
@@ -100,28 +85,36 @@ export default function Home() {
 
       {/* Resource Cards */}
       {tabIndex === 0 ? (
-  <Grid container spacing={2}>
-    {assignments.map((res, index) => (
-      <AssignmentCard
-        key={index}
-        title={res.title}
-        className={res.className}
-        color={res.color}
-      />
-    ))}
-  </Grid>
+  assignmentDataLoading ? (
+    <Grid container justifyContent={"center"}><Loader /></Grid>
+  ) : (
+    <Grid container spacing={2}>
+      {assignmentData?.data?.map((res, index) => (
+        <AssignmentCard
+          key={index}
+          title={res.title}
+          className={res.division }
+          color={classColors[index % classColors.length]}
+        />
+      ))}
+    </Grid>
+  )
 ) : (
-  <Grid container spacing={2}>
-    {resources.map((res, index) => (
-      <ResourceCard
-        key={index}
-        title={res.title}
-        className={res.className}
-        color={res.color}
-        downloadUrl={res.downloadUrl}
-      />
-    ))}
-  </Grid>
+  isResourcesDataLoading ? (
+    <Grid container><Loader /></Grid>
+  ) : (
+    <Grid container spacing={2}>
+      {resourcesData?.data.map((res, index) => (
+        <ResourceCard
+          key={index}
+          title={res.title}
+          className={res.subject}
+          color={classColors[index % classColors.length]}
+          downloadUrl={res.fileUrl}
+        />
+      ))}
+    </Grid>
+  )
 )}
     
 
@@ -145,7 +138,8 @@ export default function Home() {
     >
       <AddIcon sx={{ color: "white", fontSize: "2rem" }} />
     </Box>
-    </Grid>
+       </LayoutWrapper>
+      
   );
 }
 

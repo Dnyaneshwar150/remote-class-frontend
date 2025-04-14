@@ -18,21 +18,22 @@ import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { SignupPayload } from '@/app/utils/models/api.interface';
 import router from 'next/router';
+import LayoutWrapper from '@/app/components/LayoutWrapper';
 
 
 export default function Home() {
     const router = useRouter();
   
     const handleBackClick = () => {
-        console.log("Back button click")
-    }
+      router.back(); 
+    };
 
     const goToLogin = () => {
       router.push("/auth/login");
     }
     return (
-         <Grid  height="100vh" sx={{backgroundColor:"var(--primary-white)"}} py={"3rem"} px={"2rem"}>
-            <Grid container item justifySelf={"start"}>
+          <LayoutWrapper sx={{backgroundColor:"var(--primary-white)"}}>
+          <Grid container item justifySelf={"start"}>
             <BackButton onClick={handleBackClick}/>
            </Grid>
           <Grid mt={"4.33rem"} container item fontSize={"3rem"} fontWeight={"var(--fontweight-extra-bold)"} color={"var(--black)"}>Teacher Sign up  </Grid> 
@@ -51,18 +52,15 @@ export default function Home() {
            fontWeight:"var(--fontweight-medium)",
           }} onClick={goToLogin} >Go here</Button>
         </Grid>
-        </Grid>
+             </LayoutWrapper>
+            
     );
 
 }
 
 
-
-  
  const SignupForm = () => {
-    // const [signup, { isLoading, isError, error }] = useSignupMutation();
     const [signup] = useSignupMutation();
-
 
     const handleSignup = async (formData: SignupPayload) => {
       try {
@@ -98,7 +96,7 @@ export default function Home() {
    
 
     return (
-        <Grid container flexDirection={"column"} gap={"2rem"} py={"2rem"}>      
+        <Grid container flexDirection={"column"} gap={"1rem"} py={"2rem"}>      
        <CustomTextField label="First Name" icon={<PermIdentityIcon sx={{ fontSize: "2.5rem" }} />} value={formData.firstName} onChange={(value) => handleChange("firstName", value)} />
        <CustomTextField label="Last Name" icon={<PermIdentityIcon sx={{ fontSize: "2.5rem" }} />} value={formData.lastName} onChange={(value) => handleChange("lastName", value)} />
       <CustomTextField label="Email address" icon={<MailOutlineIcon sx={{ fontSize: "2.5rem" }} />} value={formData.email} onChange={(value) => handleChange("email", value)} />
