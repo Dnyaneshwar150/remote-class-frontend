@@ -22,7 +22,7 @@ export default function Home ()   {
   const router = useRouter();
 
     const [open, setOpen] = useState(true);
-    const [formData, setFormData] = useState({ email: "", password: "" });
+    const [formData, setFormData] = useState({ rollNumber: "", dob: "" });
 
     const handleChange = (field: keyof typeof formData, value: string) => {
         setFormData((prev: typeof formData) => ({ ...prev, [field]: value }));
@@ -32,11 +32,22 @@ export default function Home ()   {
       const [login] = useStudentLoginMutation();
       
          
-      const handleSignIn = async () => {
+      const handleLogIn = async () => {
+        // Validate missing or empty fields
+        const missingFields = Object.entries(formData)
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          .filter(([_, value]) => !value.trim())
+          .map(([key]) => key);
+    
+        if (missingFields.length > 0) {
+          toast.error(`Please fill in: ${missingFields.join(", ")}`);
+          return;
+        }
+    
         try {
           const response: StudentLoginResponse = await login(formData).unwrap();
-      
-          if (response.success) {
+    
+          if (response.success && response.data?.token) {
             toast.success("Login successful! 🎉");
             localStorage.setItem("authToken", response.data.token);
             setOpen(false);
@@ -44,11 +55,12 @@ export default function Home ()   {
           } else {
             toast.error(response.message || "Login failed. ❌");
           }
-        } catch {
-          toast.error("Login failed. Please try again. ❌");
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error ? error.message : "Login failed. Please try again. ❌";
+          toast.error(errorMessage);
         }
       };
-      
 
     return (
        
@@ -88,10 +100,10 @@ export default function Home ()   {
             <Grid container mt={"2rem"} gap="2rem" flexDirection="column" >
               <Grid item>
                 <CustomTextField
-                  label="Email address"
+                  label="Roll No"
                   icon={<MailOutlineIcon sx={{ fontSize: "2.5rem" }} />}
-                  value={formData.email}
-                  onChange={(value) => handleChange("email", value)}
+                  value={formData.rollNumber}
+                  onChange={(value) => handleChange("rollNumber", value)}
                 />
               </Grid>
   
@@ -100,12 +112,12 @@ export default function Home ()   {
                   type="password"
                   label="Password"
                   icon={<LockIcon sx={{ fontSize: "2.5rem" }} />}
-                  value={formData.password}
-                  onChange={(value) => handleChange("password", value)}
+                  value={formData.dob}
+                  onChange={(value) => handleChange("dob", value)}
                 />
               </Grid>
 
-              <Grid item container justifyContent={'center'}> <CommonButton label={"Sign in >"} onClick={handleSignIn} sxStyles={{backgroundColor:"var(--black)", color:"var(--primary-white)",}}/>
+              <Grid item container justifyContent={'center'}> <CommonButton label={"Sign in >"} onClick={handleLogIn} sxStyles={{backgroundColor:"var(--black)", color:"var(--primary-white)",}}/>
   </Grid>
             </Grid>
           </Box>

@@ -48,7 +48,8 @@ export default function Home() {
       {isDashboardDataLoading ? (
       <Loader/>
       ): teacherDashboardData && (
-          <><Grid
+          <>
+          <Grid
             container
             flexDirection={"column"}
           >
@@ -81,7 +82,8 @@ export default function Home() {
             >
               Mr.{teacherDashboardData.data.teacherName}
             </Grid>
-          </Grid><Grid
+          </Grid>
+          <Grid
             container
             gap={"1rem"}
           >

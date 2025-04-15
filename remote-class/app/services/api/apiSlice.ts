@@ -10,6 +10,7 @@ import {
   ResetPasswordPayload,
   SignupPayload,
   SignupResponse,
+  StudentDashboardResponse,
   StudentLoginPayload,
   StudentLoginResponse,
   TeacherAssignmentsResponse,
@@ -30,7 +31,7 @@ export const remoteClassApi = createApi({
       return headers;
     },
   }),
-
+  tagTypes: ["TeacherDashboard"], // Define the tag type
   endpoints: (builder) => ({
     //Tearcher Signup login forgot passwords and logout
     login: builder.mutation<LoginResponse, LoginPayload>({
@@ -99,6 +100,7 @@ export const remoteClassApi = createApi({
         url: "/resources",
         method: "GET",
       }),
+      providesTags: ["TeacherDashboard"],
     }),
     //uplaod assingment
     addResource: builder.mutation<void, AddResourcePayload>({
@@ -115,6 +117,7 @@ export const remoteClassApi = createApi({
           body: formData,
         };
       },
+      invalidatesTags: ["TeacherDashboard"], // Invalidate on success
     }),
 
     // getAssignmentList
@@ -142,6 +145,7 @@ export const remoteClassApi = createApi({
           body: formData,
         };
       },
+      invalidatesTags: ["TeacherDashboard"], // Invalidate on success
     }),
     //clasess list api
     getClasses: builder.query<ClassesListResponse, void>({
@@ -157,11 +161,18 @@ export const remoteClassApi = createApi({
         method: "POST",
         body: data, // The payload to be sent in the body of the POST request
       }),
+      invalidatesTags: ["TeacherDashboard"], // Invalidate on success
     }),
     //dashboard
     getTeacherDashboard: builder.query<TeacherDashboardResponse, void>({
       query: () => ({
         url: "/dashboard/teacher",
+        method: "GET",
+      }),
+    }),
+    getStudentDashboard: builder.query<StudentDashboardResponse, void>({
+      query: () => ({
+        url: "dashboard/student",
         method: "GET",
       }),
     }),
@@ -182,4 +193,6 @@ export const {
   useAddResourceMutation,
   useUploadAssignmentMutation,
   useGetTeacherAssignmentQuery,
+  useGetStudentDashboardQuery,
+  useCreateClassMutation,
 } = remoteClassApi;

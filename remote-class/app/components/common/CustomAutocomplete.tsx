@@ -5,8 +5,8 @@ import SchoolIcon from "@mui/icons-material/School";
 interface CustomAutoCompleteProps {
     label: string; 
     options: string[]; 
-    selectedOption: string | null; 
-    onSelect: (value: string | null) => void; 
+    selectedOption: string; 
+    onSelect: (value: string) => void; 
   }
   
  const CustomAutocomplete: React.FC<CustomAutoCompleteProps> = ({
@@ -18,8 +18,13 @@ interface CustomAutoCompleteProps {
     return (
       <Autocomplete
         options={options}
-        value={selectedOption || ""}
+        value={selectedOption}
         onChange={(e, value) => onSelect(value || "")}
+        onBlur={() => {
+          if (!options.includes(selectedOption)) {
+            onSelect("");
+          }
+        }}
         renderInput={(params) => (
           <TextField
             {...params}

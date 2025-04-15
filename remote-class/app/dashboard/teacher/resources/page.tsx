@@ -8,6 +8,8 @@ import LayoutWrapper from "@/app/components/LayoutWrapper";
 import { useGetTeacherAssignmentQuery, useGetTeacherResourcesQuery } from "@/app/services/api/apiSlice";
 import Loader from "@/app/components/common/Loader";
 import BackButton from '@/app/components/common/Button/BackButton';
+import DownloadIcon from "@mui/icons-material/Download";  // Import the MUI download icon
+
 
 
 export default function Home() {
@@ -16,6 +18,7 @@ export default function Home() {
         const teacherId = searchParams.get("teacherId");
         const {data:resourcesData,isLoading:isResourcesDataLoading} = useGetTeacherResourcesQuery();
         const {data:assignmentData,isLoading:assignmentDataLoading} = useGetTeacherAssignmentQuery();
+        console.log("assignment data",assignmentData);
         const classColors = ["#ffffff", "#FFC107", "#00BCD4", "#4CAF50"]; 
 
     const [tabIndex, setTabIndex] = useState(1); 
@@ -178,32 +181,38 @@ interface AssignmentCardProps {
   }
   
   const ResourceCard: React.FC<ResourceCardProps> = ({ title, className, color, downloadUrl }) => {
+
     return (
       <Grid item xs={6}>
-        <Box
-          p="1rem"
-          border="2px solid var(--black)"
-          borderRadius="1rem"
-          bgcolor={color}
-          display="flex"
-          flexDirection="column"
-          justifyContent="space-between"
-          minHeight="7rem"
-          sx={{ boxSizing: "border-box" }}
+      <Box
+        p="1rem"
+        border="2px solid var(--black)"
+        borderRadius="1rem"
+        bgcolor={color}
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+        minHeight="7rem"
+        sx={{ boxSizing: "border-box" }}
+      >
+        <Typography fontWeight="bold">{title}</Typography>
+        <Typography>{className}</Typography>
+        
+        {/* Add the download link with the MUI download icon */}
+        <Typography
+          color="blue"
+          fontWeight="bold"
+          sx={{ cursor: "pointer", display: "flex", alignItems: "center" }}
+          component="a"
+          href={`http://localhost:5000${downloadUrl}`}  // Fix the URL by adding the protocol
+          download
+          target="_blank"  // Open the link in a new tab
+          rel="noopener noreferrer"  // Recommended for security when using target="_blank"
         >
-          <Typography fontWeight="bold">{title}</Typography>
-          <Typography>{className}</Typography>
-          <Typography
-            color="blue"
-            fontWeight="bold"
-            sx={{ cursor: "pointer" }}
-            component="a"
-            href={downloadUrl}
-            download
-          >
-            Download
-          </Typography>
-        </Box>
-      </Grid>
+          <DownloadIcon sx={{ mr: 1 }} />  {/* MUI Download Icon with margin */}
+          Download
+        </Typography>
+      </Box>
+    </Grid>
     );
   };

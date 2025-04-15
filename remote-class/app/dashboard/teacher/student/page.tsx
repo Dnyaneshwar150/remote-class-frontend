@@ -35,18 +35,31 @@ export default function Home() {
   };
 
   const handleSubmit = async (formData: CreateStudentPayload) => {
+    // Validate missing or empty fields
+    const missingFields = Object.entries(formData)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      .filter(([_, value]) => typeof value === 'string' && !value.trim()) 
+      .map(([key]) => key);
+  
+    if (missingFields.length > 0) {
+      toast.error(`Please fill in: ${missingFields.join(', ')}`);
+      return;
+    }
+  
     try {
       const response = await createStudent(formData).unwrap();
-
+  
       if (!response.success) {
-        toast.error(response.message || "Signup failed ❌");
+        toast.error(response.message || 'Failed to create student ❌');
         return;
       }
-
-      toast.success(response.message || "Student Created Successfully 🎉");
-      router.push("/dashboard/teacher");
-    } catch {
-      toast.error("Signup failed. Please try again ❌");
+  
+      toast.success(response.message || 'Student created successfully 🎉');
+      router.push('/dashboard/teacher');
+    } catch (error) {
+      // Enhanced error handling
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create student. Please try again ❌';
+      toast.error(errorMessage);
     }
   };
 
@@ -71,6 +84,7 @@ export default function Home() {
           item
           fontSize={"3.6rem"}
           fontWeight={"var(--fontweight-extra-bold)"}
+          mt={"2rem"}
         >
           Create Student
         </Grid>
@@ -110,8 +124,9 @@ export default function Home() {
           label='Year'
           options={["FY", "SY", "TY", "BE"]}
           selectedOption={formData.year}
-          onSelect={(value) => handleChange("department", value || "")}
+          onSelect={(value) => handleChange("year", value || "")}
         />
+  
         <CustomTextField
           label='Division'
           icon={<GroupIcon sx={{ fontSize: "2.5rem" }} />}

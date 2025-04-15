@@ -42,8 +42,8 @@ export interface SignupResponse {
 }
 
 export interface StudentLoginPayload {
-  email: string;
-  password: string;
+  rollNumber: string;
+  dob: string;
 }
 
 export interface StudentLoginResponse {
@@ -83,7 +83,7 @@ export interface CreateStudentPayload {
   lastname: string;
   rollNumber: string;
   dob: string;
-  year: string; // change from year to class if your backend expects 'class'
+  year: string;
   division: string;
 }
 
@@ -168,4 +168,21 @@ export interface TeacherAssignmentsResponse {
   success: boolean;
   message: string;
   data: TeacherAssignment[];
+}
+
+export interface StudentDashboardData {
+  studentName: string;
+  rollNumber: string;
+  year: string;
+  division: string;
+  totalAssignments: number;
+  submittedAssignments: number;
+  pendingAssignments: number;
+  resourcesAvailable: number;
+}
+
+export interface StudentDashboardResponse {
+  success: boolean;
+  data?: StudentDashboardData;
+  message?: string;
 }

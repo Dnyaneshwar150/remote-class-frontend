@@ -7,10 +7,16 @@ import LayoutWrapper from "@/app/components/LayoutWrapper";
 import { Grid } from "@mui/material";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import CustomAutocomplete from "@/app/components/common/CustomAutocomplete";
+// import { useCreateClassMutation } from "@/app/services/api/apiSlice";
+// import { toast } from "react-hot-toast";
+
 
 
 export default function Home() {
   const router = useRouter();
+  // const [createClass] =   useCreateClassMutation();
+
 
   const [classDetails, setClassDetails] = useState({
     name: "",
@@ -18,7 +24,6 @@ export default function Home() {
     division: ""
   });
 
-  console.log(classDetails)
 
   const handleChange = (field: keyof typeof classDetails, value: string) => {
     setClassDetails(prev => ({
@@ -27,10 +32,37 @@ export default function Home() {
     }));
   };
 
+const handleShareClassesClick = () => {
+  console.log("handleShareClassesClick");
+}
+  // const handleShareClassesClick = async () => {
+  //   // Validate missing or empty fields
+  //   const missingFields = Object.entries(classDetails)
+  //     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  //     .filter(([_, value]) => !value.trim())
+  //     .map(([key]) => key);
 
-  const handleShareClassesClick = () => {
-    console.log("share classes cLick")
-  }
+  //   if (missingFields.length > 0) {
+  //     toast.error(`Please fill in: ${missingFields.join(", ")}`);
+  //     return;
+  //   }
+   
+  //   try {
+  //     const response = await createClass(classDetails).unwrap(); 
+
+  //     if (response.success) {
+  //       toast.success("Class created successfully! 🎉");
+  //       setClassDetails({ name: "", year: "", division: "" });
+  //       router.push("/dashboard/teacher/classes");
+  //     } else {
+  //       toast.error(response.message || "Failed to create class. ❌");
+  //     }
+  //   } catch (error) {
+  //     const errorMessage =
+  //       error instanceof Error ? error.message : "Failed to create class. Please try again. ❌";
+  //     toast.error(errorMessage);
+  //   }
+  // };
 
   return (
     
@@ -74,11 +106,12 @@ export default function Home() {
       </Grid>
   
       <Grid item>
-        <CustomInputField
-          label="Year"
-          value={classDetails.year}
-          onChange={(value) => handleChange("year", value)}
-        />
+          <CustomAutocomplete
+                  label='Year'
+                  options={["FY", "SY", "TY", "BE"]}
+                  selectedOption={classDetails.year}
+                  onSelect={(value) => handleChange("year", value || "")}
+                />
       </Grid>
   
       <Grid item>
