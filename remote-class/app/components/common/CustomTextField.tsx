@@ -1,8 +1,9 @@
 import { InputAdornment, TextField } from "@mui/material";
+import React, { ReactNode } from "react";
 
 interface CustomTextFieldProps {
     label: string;
-    icon: JSX.Element;
+    icon: ReactNode;
     type?:string;
     value: string;
     onChange: (value: string) => void;
