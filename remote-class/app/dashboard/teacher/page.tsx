@@ -1,7 +1,8 @@
 "use client";
 
-import { Grid } from "@mui/material";
+import { Grid, IconButton } from "@mui/material";
 import ClassIcon from "@mui/icons-material/Class";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { useRouter } from "next/navigation";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import LayoutWrapper from "@/app/components/LayoutWrapper";
@@ -14,6 +15,10 @@ export default function Home() {
   console.log(teacherDashboardData)
   const teacherId = teacherDashboardData?.data.teacherId;
   const router = useRouter();
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    router.push("/auth/login");
+  };
 
   const handleClassCardClick = () => {
     router.push(`/dashboard/teacher/classes?teacherId=${teacherId}`);
@@ -49,12 +54,26 @@ export default function Home() {
           >
             {" "}
             <Grid
-              item
-              fontSize={"3.6rem"}
-              fontWeight={"var(--fontweight-extra-bold)"}
-            >
-              Welcome
-            </Grid>
+      item
+      container
+      alignItems="center"
+      justifyContent="space-between"
+      fontSize={"3.6rem"}
+      fontWeight={"var(--fontweight-extra-bold)"}
+    >
+      <div>Welcome</div>
+      <IconButton
+        onClick={handleLogout}
+        sx={{
+          color: "var(--black)",
+          border: "2px solid var(--black)",
+          borderRadius: "1rem",
+          padding: "0.5rem",
+        }}
+      >
+        <LogoutIcon sx={{ fontSize: "2.5rem" }} />
+      </IconButton>
+    </Grid>
             <Grid
               item
               fontSize={"3.6rem"}

@@ -22,8 +22,8 @@ export interface ResetPasswordPayload {
 }
 
 export interface SignupPayload {
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   collegeCode: string;
   email: string;
   password: string;

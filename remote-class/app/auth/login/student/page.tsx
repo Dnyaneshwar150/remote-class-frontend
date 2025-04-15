@@ -13,6 +13,7 @@ import { useStudentLoginMutation } from "@/app/services/api/apiSlice";
 import { StudentLoginResponse } from "@/app/utils/models/api.interface";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import LayoutWrapper from "@/app/components/LayoutWrapper";
 
 
 
@@ -50,16 +51,8 @@ export default function Home ()   {
       
 
     return (
-        <Grid
-        container
-        height="100vh"
-        sx={{
-          backgroundColor: "var(--redish-orange)",
-          overflow: "hidden",
-          margin: 0,
-          padding: 0,
-        }}
-      >
+       
+        <LayoutWrapper sx={{backgroundColor:"var(--redish-orange)"}}>
         <Grid item container justifyContent="center" alignContent="center">
           <PeepStanding />
         </Grid>
@@ -69,7 +62,7 @@ export default function Home ()   {
  sxStyles={{backgroundColor:"var(--black)", color:"var(--primary-white)",}}/>
       </Grid>
   
-        <Modal open={open} onClose={() => setOpen(false)}>
+        <Modal open={open} onClose={() => setOpen(false)} >
           <Box
             sx={{
               position: "absolute",
@@ -80,7 +73,7 @@ export default function Home ()   {
               borderRadius: 2,
               boxShadow: 24,
               p: 3,
-              width: "100%",
+              width:"768px"
             }}
           >
             <Grid container justifyContent="space-between" alignItems="center" borderBottom="2px solid var(--black)">
@@ -117,6 +110,7 @@ export default function Home ()   {
             </Grid>
           </Box>
         </Modal>
-      </Grid>
+        </LayoutWrapper>
+       
     )
 }

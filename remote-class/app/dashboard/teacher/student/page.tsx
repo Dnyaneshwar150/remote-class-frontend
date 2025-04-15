@@ -3,7 +3,6 @@ import { Grid } from "@mui/material";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import SchoolIcon from "@mui/icons-material/School";
 import GroupIcon from "@mui/icons-material/Group";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -15,6 +14,7 @@ import { useCreateStudentMutation } from "@/app/services/api/apiSlice";
 import { CreateStudentPayload } from "@/app/utils/models/api.interface";
 import LayoutWrapper from "@/app/components/LayoutWrapper";
 import BackButton from "@/app/components/common/Button/BackButton";
+import CustomAutocomplete from "@/app/components/common/CustomAutocomplete";
 
 export default function Home() {
   const router = useRouter();
@@ -31,7 +31,7 @@ export default function Home() {
   });
 
   const handleBackClick = () => {
-    router.back(); 
+    router.back();
   };
 
   const handleSubmit = async (formData: CreateStudentPayload) => {
@@ -43,7 +43,7 @@ export default function Home() {
         return;
       }
 
-      toast.success(response.message || "Signup successful 🎉");
+      toast.success(response.message || "Student Created Successfully 🎉");
       router.push("/dashboard/teacher");
     } catch {
       toast.error("Signup failed. Please try again ❌");
@@ -66,9 +66,7 @@ export default function Home() {
         container
         flexDirection={"column"}
       >
-         <BackButton onClick={handleBackClick}/>
-
-        {" "}
+        <BackButton onClick={handleBackClick} />{" "}
         <Grid
           item
           fontSize={"3.6rem"}
@@ -108,11 +106,11 @@ export default function Home() {
           value={formData.dob}
           onChange={(value) => handleChange("dob", value)}
         />
-        <CustomTextField
+        <CustomAutocomplete
           label='Year'
-          icon={<SchoolIcon sx={{ fontSize: "2.5rem" }} />}
-          value={formData.year}
-          onChange={(value) => handleChange("year", value)}
+          options={["FY", "SY", "TY", "BE"]}
+          selectedOption={formData.year}
+          onSelect={(value) => handleChange("department", value || "")}
         />
         <CustomTextField
           label='Division'
