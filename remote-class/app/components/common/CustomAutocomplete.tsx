@@ -7,6 +7,7 @@ interface CustomAutoCompleteProps {
     options: string[]; 
     selectedOption: string; 
     onSelect: (value: string) => void; 
+    isIconDisabled?:boolean;
   }
   
  const CustomAutocomplete: React.FC<CustomAutoCompleteProps> = ({
@@ -14,6 +15,7 @@ interface CustomAutoCompleteProps {
     options,
     selectedOption,
     onSelect,
+    isIconDisabled,
   }) => {
     return (
       <Autocomplete
@@ -57,7 +59,7 @@ interface CustomAutoCompleteProps {
               ...params.InputProps,
               startAdornment: (
                 <Box sx={{ display: "flex", alignItems: "center", pl: 1 }}>
-                  <SchoolIcon style={{ fontSize: "2.5rem"}} />
+                 {!isIconDisabled &&  <SchoolIcon style={{ fontSize: "2.5rem"}} />}
                   {params.InputProps.startAdornment}
                 </Box>
               ),

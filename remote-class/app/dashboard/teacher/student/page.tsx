@@ -3,7 +3,6 @@ import { Grid } from "@mui/material";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import GroupIcon from "@mui/icons-material/Group";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
@@ -127,12 +126,13 @@ export default function Home() {
           onSelect={(value) => handleChange("year", value || "")}
         />
   
-        <CustomTextField
-          label='Division'
-          icon={<GroupIcon sx={{ fontSize: "2.5rem" }} />}
-          value={formData.division}
-          onChange={(value) => handleChange("division", value)}
-        />
+           <CustomAutocomplete
+                  label='Division'
+                  options={["A", "B", "C", "D","E"]}
+                  selectedOption={formData.division}
+                  onSelect={(value) => handleChange("division", value || "")}
+                  isIconDisabled
+                /> 
       </Grid>
 
       <Grid

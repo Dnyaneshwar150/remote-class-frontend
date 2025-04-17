@@ -8,14 +8,14 @@ import { Grid } from "@mui/material";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import CustomAutocomplete from "@/app/components/common/CustomAutocomplete";
-// import { useCreateClassMutation } from "@/app/services/api/apiSlice";
-// import { toast } from "react-hot-toast";
+import { useCreateClassMutation } from "@/app/services/api/apiSlice";
+import { toast } from "react-hot-toast";
 
 
 
 export default function Home() {
   const router = useRouter();
-  // const [createClass] =   useCreateClassMutation();
+  const [createClass] =   useCreateClassMutation();
 
 
   const [classDetails, setClassDetails] = useState({
@@ -32,37 +32,33 @@ export default function Home() {
     }));
   };
 
-const handleShareClassesClick = () => {
-  console.log("handleShareClassesClick");
-}
-  // const handleShareClassesClick = async () => {
-  //   // Validate missing or empty fields
-  //   const missingFields = Object.entries(classDetails)
-  //     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  //     .filter(([_, value]) => !value.trim())
-  //     .map(([key]) => key);
+  const handleShareClassesClick = async () => {
+    const missingFields = Object.entries(classDetails)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      .filter(([_, value]) => !value.trim())
+      .map(([key]) => key);
 
-  //   if (missingFields.length > 0) {
-  //     toast.error(`Please fill in: ${missingFields.join(", ")}`);
-  //     return;
-  //   }
+    if (missingFields.length > 0) {
+      toast.error(`Please fill in: ${missingFields.join(", ")}`);
+      return;
+    }
    
-  //   try {
-  //     const response = await createClass(classDetails).unwrap(); 
+    try {
+      const response = await createClass(classDetails).unwrap(); 
 
-  //     if (response.success) {
-  //       toast.success("Class created successfully! 🎉");
-  //       setClassDetails({ name: "", year: "", division: "" });
-  //       router.push("/dashboard/teacher/classes");
-  //     } else {
-  //       toast.error(response.message || "Failed to create class. ❌");
-  //     }
-  //   } catch (error) {
-  //     const errorMessage =
-  //       error instanceof Error ? error.message : "Failed to create class. Please try again. ❌";
-  //     toast.error(errorMessage);
-  //   }
-  // };
+      if (response.success) {
+        toast.success("Class created successfully! 🎉");
+        setClassDetails({ name: "", year: "", division: "" });
+        router.push("/dashboard/teacher/classes");
+      } else {
+        toast.error(response.message || "Failed to create class. ❌");
+      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to create class. Please try again. ❌";
+      toast.error(errorMessage);
+    }
+  };
 
   return (
     

@@ -1,24 +1,21 @@
 "use client";
 
-import { Grid, Box, Tab, Tabs } from "@mui/material";
+import { Grid, Typography, Box, Tab, Tabs } from "@mui/material";
 import React, { useState } from "react";
-import AddIcon from '@mui/icons-material/Add';
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter} from "next/navigation";
 import LayoutWrapper from "@/app/components/LayoutWrapper";
-import { useGetTeacherAssignmentQuery, useGetTeacherResourcesQuery } from "@/app/services/api/apiSlice";
+import { useGetStudentAssignmentQuery, useGetStudentResourcesQuery, } from "@/app/services/api/apiSlice";
 import Loader from "@/app/components/common/Loader";
 import BackButton from '@/app/components/common/Button/BackButton';
-import { AssignmentCard } from "@/app/components/common/AssignmentCard";
+import DownloadIcon from "@mui/icons-material/Download";  // Import the MUI download icon
 import { ResourceCard } from "@/app/components/common/ResourceCard";
 
 
 
 export default function Home() {
     const router = useRouter();
-    const searchParams = useSearchParams();
-        const teacherId = searchParams.get("teacherId");
-        const {data:resourcesData,isLoading:isResourcesDataLoading} = useGetTeacherResourcesQuery();
-        const {data:assignmentData,isLoading:assignmentDataLoading} = useGetTeacherAssignmentQuery();
+        const {data:resourcesData,isLoading:isResourcesDataLoading} = useGetStudentResourcesQuery();
+        const {data:assignmentData,isLoading:assignmentDataLoading} = useGetStudentAssignmentQuery();
         const classColors = ["#ffffff", "#FFC107", "#00BCD4", "#4CAF50"]; 
 
     const [tabIndex, setTabIndex] = useState(1); 
@@ -28,13 +25,6 @@ export default function Home() {
     setTabIndex(newValue);
   };
 
-  const handleAddClick = () => {
-    if (tabIndex === 0) {
-      router.push(`/dashboard/teacher/assignments/add?teacherId=${teacherId}`);
-    } else {
-      router.push(`/dashboard/teacher/resources/add?teacherId=${teacherId}`);
-    }
-  };
 
   return (
        <LayoutWrapper>
@@ -114,51 +104,73 @@ export default function Home() {
   isResourcesDataLoading ? (
     <Grid container><Loader /></Grid>
   ) : (
-    resourcesData.data.length === 0 ? (
-    <Grid fontSize={"1.6rem"} fontWeight={"var(--fontweight-extra-bold)"} color={"var(--black)"}>{"You Haven't Uplaoded any resource"} </Grid>
-    ):(
       <Grid container spacing={2}>
-      {resourcesData?.data.map((res, index) => (
+   {resourcesData &&
+  Object.entries(resourcesData.data).flatMap(([year, subjects]) =>
+    Object.entries(subjects).flatMap(([subject, resources]) =>
+      resources.map((res, index) => (
         <ResourceCard
-          key={index}
+          key={`${year}-${subject}-${index}`}
           title={res.title}
-          className={res.subject}
+          className={subject}
           color={classColors[index % classColors.length]}
           downloadUrl={res.fileUrl}
         />
-      ))}
-    </Grid>
+      ))
     )
-   
+  )}
+    </Grid>
   )
 )}
-    
-
-      {/* Floating Add Button */}
-      <Box
-      position="absolute"
-      bottom="1.5rem"
-      left="50%"
-      onClick={handleAddClick}
-      sx={{
-        transform: "translateX(-50%)",
-        backgroundColor: "var(--black)",
-        width: "3rem",
-        height: "3rem",
-        borderRadius: "50%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        cursor: "pointer",
-      }}
-    >
-      <AddIcon sx={{ color: "white", fontSize: "2rem" }} />
-    </Box>
        </LayoutWrapper>
       
   );
 }
 
+interface AssignmentCardProps {
+    title: string;
+    className: string;
+    color: string;
+    description:string;
+    downloadUrl: string;
+    classes:string;
+  }
+  
+  const AssignmentCard: React.FC<AssignmentCardProps> = ({ title, className,classes, color,description,downloadUrl}) => {
+    return (
+      <Grid item xs={6}>
+        <Box
+          p="1rem"
+          border="2px solid var(--black)"
+          borderRadius="1rem"
+          bgcolor={color}
+          display="flex"
+          flexDirection="column"
+          justifyContent="space-between"
+          minHeight="7rem"
+          sx={{ boxSizing: "border-box" }}
+        >
+          <Typography fontWeight="bold">{title}</Typography>
+          <Typography>Divison:{className}</Typography>
+          <Typography>{classes} </Typography>
+          <Typography
+          color="blue"
+          fontWeight="bold"
+          sx={{ cursor: "pointer", display: "flex", alignItems: "center" }}
+          component="a"
+          href={`http://localhost:5000${downloadUrl}`}  // Fix the URL by adding the protocol
+          download
+          target="_blank"  // Open the link in a new tab
+          rel="noopener noreferrer"  // Recommended for security when using target="_blank"
+        >
+          <DownloadIcon sx={{ mr: 1 }} />  {/* MUI Download Icon with margin */}
+          Download
+        </Typography>
+         <Typography>{description}</Typography>
 
+        </Box>
+      </Grid>
+    );
+  };
 
   

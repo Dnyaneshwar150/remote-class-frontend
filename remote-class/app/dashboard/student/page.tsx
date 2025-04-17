@@ -18,13 +18,14 @@ export default function Home() {
     router.push("/auth/login");
   };
 
-  const handleClassCardClick = () => {
-    router.push(`/dashboard/student/classes`);
-  };
+ const handleSubmittedAssignmentCardClick = () => {
+  console.log("pending assignment")
+ }
 
-  const handleAssignmentsCardClick = () => {
-    console.log(`/dashboard/student/assignment`);
-  };
+ const handlePendingAssingmentCardClick = () => {
+  console.log("pending assignment")
+ }
+
 
   const handleResourcesCardClick = () => {
     router.push(`/dashboard/student/resources`);
@@ -78,16 +79,21 @@ export default function Home() {
                   title='Total Assignments'
                   count={studentDashboardData.data.totalAssignments}
                   bgColor='var(--amber)'
-                  onClick={handleClassCardClick} />
+                  onClick={handleResourcesCardClick} />
+                <StatsCard
+                  title='Pending Assignment'
+                  count={studentDashboardData.data.submittedAssignments}
+                  bgColor='var(--redish-orange)'
+                  onClick={handlePendingAssingmentCardClick} />
                 <StatsCard
                   title='Submitted Assignment'
                   count={studentDashboardData.data.submittedAssignments}
-                  bgColor='var(--primary-blue)'
-                  onClick={handleAssignmentsCardClick} />
+                  bgColor='var(--teal)'
+                  onClick={handleSubmittedAssignmentCardClick} />
                 <StatsCard
                   title='Resources'
                   count={studentDashboardData.data.resourcesAvailable}
-                  bgColor='var(--teal)'
+                  bgColor='var(--primary-blue)'
                   onClick={handleResourcesCardClick} />
               </Grid><Grid
                 container

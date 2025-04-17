@@ -2,6 +2,7 @@ import {
   AddResourcePayload,
   ClassesListResponse,
   CreateClassPayload,
+  CreateClassResponse,
   CreateStudentPayload,
   CreateStudentResponse,
   ForgetPasswordPayload,
@@ -13,6 +14,7 @@ import {
   StudentDashboardResponse,
   StudentLoginPayload,
   StudentLoginResponse,
+  StudentResourceResponse,
   TeacherAssignmentsResponse,
   TeacherDashboardResponse,
   TeacherResourcesResponse,
@@ -132,12 +134,12 @@ export const remoteClassApi = createApi({
     uploadAssignment: builder.mutation<void, UploadAssignmentPayload>({
       query: ({ file, title, description, deadline, year, division }) => {
         const formData = new FormData();
-        formData.append("file", file);
         formData.append("title", title);
         formData.append("description", description);
         formData.append("deadline", deadline);
         formData.append("year", year);
         formData.append("division", division);
+        formData.append("file", file);
 
         return {
           url: "/assignment",
@@ -155,7 +157,7 @@ export const remoteClassApi = createApi({
       }),
     }),
     //create clases
-    createClass: builder.mutation<void, CreateClassPayload>({
+    createClass: builder.mutation<CreateClassResponse, CreateClassPayload>({
       query: (data) => ({
         url: "/class/create",
         method: "POST",
@@ -170,9 +172,23 @@ export const remoteClassApi = createApi({
         method: "GET",
       }),
     }),
+
+    //Student dashboard
     getStudentDashboard: builder.query<StudentDashboardResponse, void>({
       query: () => ({
         url: "dashboard/student",
+        method: "GET",
+      }),
+    }),
+    getStudentResources: builder.query<StudentResourceResponse, void>({
+      query: () => ({
+        url: "/resources/shared",
+        method: "GET",
+      }),
+    }),
+    getStudentAssignment: builder.query<TeacherAssignmentsResponse, void>({
+      query: () => ({
+        url: "/assignment/all",
         method: "GET",
       }),
     }),
@@ -195,4 +211,6 @@ export const {
   useGetTeacherAssignmentQuery,
   useGetStudentDashboardQuery,
   useCreateClassMutation,
+  useGetStudentResourcesQuery,
+  useGetStudentAssignmentQuery,
 } = remoteClassApi;

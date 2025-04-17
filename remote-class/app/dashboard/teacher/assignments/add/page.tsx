@@ -10,6 +10,7 @@ import LayoutWrapper from "@/app/components/LayoutWrapper";
 import UploadDocumentField from "@/app/components/UploadDocumentField";
 import { useUploadAssignmentMutation } from "@/app/services/api/apiSlice";
 import { toast } from "react-hot-toast";
+import CustomAutocomplete from "@/app/components/common/CustomAutocomplete";
 
 export default function AddAssignmentPage() {
   const router = useRouter();
@@ -19,10 +20,11 @@ export default function AddAssignmentPage() {
 
   const [assignmentDetails, setAssignmentDetails] = useState({
     title: "",
-    className: "",
-    subject: "",
+    year: "",
     instructions: "",
-    document: null as File | null, // ✅ accept File object
+    deadline:"",
+    document: null as File | null,
+    division:"",
   });
 
   const handleChange = (
@@ -37,9 +39,11 @@ export default function AddAssignmentPage() {
   const handleShareClick = async () => {
     if (
       !assignmentDetails.title ||
-      !assignmentDetails.className ||
-      !assignmentDetails.subject ||
-      !assignmentDetails.document
+      !assignmentDetails.year ||
+      !assignmentDetails.division ||
+      !assignmentDetails.document ||
+      !assignmentDetails.instructions || 
+      !assignmentDetails.deadline 
     ) {
       toast.error("Please fill in all required fields.");
       return;
@@ -47,22 +51,24 @@ export default function AddAssignmentPage() {
   
     try {
       await uploadAssignment({
-        file: assignmentDetails.document,
         title: assignmentDetails.title,
+        year: assignmentDetails.year,
         description: assignmentDetails.instructions,
-        deadline: "2025-04-30", //TODO do this dynamic 
-        year: assignmentDetails.className,
-        division: assignmentDetails.subject,
+        deadline: assignmentDetails.deadline, 
+        division: assignmentDetails.division,
+        file: assignmentDetails.document,
+
       }).unwrap();
       router.back();
       toast.success("Assignment uploaded successfully!");
   
       setAssignmentDetails({
         title: "",
-        className: "",
-        subject: "",
+        year: "",
         instructions: "",
         document: null,
+        deadline:"",
+        division:"",
       });
     } catch {
       toast.error("Failed to upload assignment.");
@@ -113,18 +119,30 @@ export default function AddAssignmentPage() {
         </Grid>
 
         <Grid item>
-          <CustomInputField
-            label='Select class'
-            value={assignmentDetails.className}
-            onChange={(value) => handleChange("className", value)}
-          />
+        <CustomAutocomplete
+                  label='Year'
+                  options={["FY", "SY", "TY", "BE"]}
+                  selectedOption={assignmentDetails.year}
+                  onSelect={(value) => handleChange("year", value || "")}
+                  isIconDisabled
+                />
         </Grid>
 
         <Grid item>
-          <CustomInputField
-            label='Subject Name'
-            value={assignmentDetails.subject}
-            onChange={(value) => handleChange("subject", value)}
+        <CustomAutocomplete
+                  label='Division'
+                  options={["A", "B", "C", "D","E"]}
+                  selectedOption={assignmentDetails.division}
+                  onSelect={(value) => handleChange("division", value || "")}
+                  isIconDisabled
+                />
+        </Grid>
+        
+        <Grid item>
+        <CustomInputField
+            label='Deadline'
+            value={assignmentDetails.deadline}
+            onChange={(value) => handleChange("deadline", value)}
           />
         </Grid>
 

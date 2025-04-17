@@ -164,6 +164,10 @@ export interface TeacherAssignment {
   division: string;
 }
 
+export interface CreateClassResponse {
+  success: boolean;
+  message: string;
+}
 export interface TeacherAssignmentsResponse {
   success: boolean;
   message: string;
@@ -185,4 +189,22 @@ export interface StudentDashboardResponse {
   success: boolean;
   data?: StudentDashboardData;
   message?: string;
+}
+
+export type AcademicYear = "FY" | "SY" | "TY" | "BE";
+
+export interface Resource {
+  title: string;
+  fileUrl: string;
+  fileType: string;
+  uploadedAt: string;
+}
+
+export interface StudentResourceResponse {
+  success: boolean;
+  data: {
+    [year in AcademicYear]?: {
+      [subject: string]: Resource[];
+    };
+  };
 }

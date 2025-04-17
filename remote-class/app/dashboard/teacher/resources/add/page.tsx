@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import UploadDocumentField from "@/app/components/UploadDocumentField";
 import { toast } from "react-hot-toast";
 import { useAddResourceMutation } from "@/app/services/api/apiSlice";
+import CustomAutocomplete from "@/app/components/common/CustomAutocomplete";
 
 
 
@@ -25,7 +26,6 @@ export default function AddAssignmentPage() {
   });
 
   const handleShareClick = async () => {
-    console.log("Share button click")
     if (!resourceDetails.title || !resourceDetails.className || !resourceDetails.document) {
       toast.error("Please fill in all required fields.");
       return;
@@ -40,7 +40,7 @@ export default function AddAssignmentPage() {
       }).unwrap();
 
       toast.success("Resource shared successfully!");
-      router.back();
+      router.push(`/dashboard/teacher/resources`);
 
       setResourceDetails({
         title: "",
@@ -106,11 +106,13 @@ export default function AddAssignmentPage() {
         </Grid>
 
         <Grid item>
-          <CustomInputField
-            label="Select class"
-            value={resourceDetails.className}
-            onChange={(value) => handleChange("className", value)}
-          />
+        <CustomAutocomplete
+                  label='ClassName'
+                  options={["FY", "SY", "TY", "BE"]}
+                  selectedOption={resourceDetails.className}
+                  onSelect={(value) => handleChange("className", value || "")}
+                  isIconDisabled
+                />
         </Grid>
 
         <Grid item>

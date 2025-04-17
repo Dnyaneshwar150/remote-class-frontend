@@ -12,7 +12,6 @@ import Loader from "@/app/components/common/Loader";
 export default function Home() {
 
   const {data:teacherDashboardData, isLoading: isDashboardDataLoading} =useGetTeacherDashboardQuery();
-  console.log(teacherDashboardData)
   const teacherId = teacherDashboardData?.data.teacherId;
   const router = useRouter();
   const handleLogout = () => {
@@ -134,6 +133,22 @@ export default function Home() {
                 </Grid>
               </Grid>
 
+              <ChatCard
+                studentName={"Archana Dube"}
+                subLabel={"EJ5I"}
+                count={12} />
+              <ChatCard
+                studentName={"Archana Dube"}
+                subLabel={"EJ5I"}
+                count={12} />
+              <ChatCard
+                studentName={"Archana Dube"}
+                subLabel={"EJ5I"}
+                count={12} />
+              <ChatCard
+                studentName={"Archana Dube"}
+                subLabel={"EJ5I"}
+                count={12} />
               <ChatCard
                 studentName={"Archana Dube"}
                 subLabel={"EJ5I"}
