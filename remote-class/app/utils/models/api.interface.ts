@@ -224,3 +224,25 @@ export interface StudentResourceResponse {
   message: string;
   data: StudentResource[];
 }
+
+export interface StudentInfo {
+  _id: string;
+  firstname: string;
+  lastname: string;
+  rollNumber: string;
+  dob: string;
+  year: string;
+  division: string;
+}
+
+export interface TeacherInfo {
+  _id: string;
+  teacherId: string;
+  firstname: string;
+  lastname: string;
+  collegeCode: string;
+  email: string;
+  phoneNumber: string;
+  department: string;
+  role: string;
+}

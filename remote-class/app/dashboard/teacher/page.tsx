@@ -9,6 +9,7 @@ import LayoutWrapper from "@/app/components/LayoutWrapper";
 import { useGetTeacherDashboardQuery } from "@/app/services/api/apiSlice";
 import Loader from "@/app/components/common/Loader";
 import Tooltip from "@mui/material/Tooltip";
+import PersonIcon from "@mui/icons-material/Person";
 
 export default function Home() {
   const { data: teacherDashboardData, isLoading: isDashboardDataLoading } =
@@ -35,6 +36,9 @@ export default function Home() {
 
   const handleStudentCreate = () => {
     router.push(`/dashboard/teacher/student?teacherId=${teacherId}`);
+  };
+  const handleProfileClick = () => {
+    router.push(`/dashboard/teacher/profile?teacherId=${teacherId}`);
   };
 
   return (
@@ -64,29 +68,55 @@ export default function Home() {
                 fontWeight={"var(--fontweight-extra-bold)"}
               >
                 <div>Welcome</div>
-                <IconButton
-                  onClick={handleLogout}
-                  sx={{
-                    color: "var(--black)",
-                    border: "2px solid var(--black)",
-                    borderRadius: "1rem",
-                    padding: "0.5rem",
-                  }}
-                >
-                  <Tooltip
-                    title='LogOut'
-                    componentsProps={{
-                      tooltip: {
-                        sx: {
-                          fontSize: "1.25rem",
-                          mt: "0.5rem",
-                        },
-                      },
+                <Grid item>
+                  <IconButton
+                    onClick={handleProfileClick}
+                    sx={{
+                      color: "var(--black)",
+                      border: "2px solid var(--black)",
+                      borderRadius: "1rem",
+                      padding: "0.5rem",
+                      mr: "0.5rem",
                     }}
                   >
-                    <LogoutIcon sx={{ fontSize: "2.5rem" }} />
-                  </Tooltip>
-                </IconButton>
+                    <Tooltip
+                      title='Profile'
+                      componentsProps={{
+                        tooltip: {
+                          sx: {
+                            fontSize: "1.25rem",
+                            mt: "0.5rem",
+                          },
+                        },
+                      }}
+                    >
+                      <PersonIcon sx={{ fontSize: "2.5rem" }} />
+                    </Tooltip>
+                  </IconButton>
+                  <IconButton
+                    onClick={handleLogout}
+                    sx={{
+                      color: "var(--black)",
+                      border: "2px solid var(--black)",
+                      borderRadius: "1rem",
+                      padding: "0.5rem",
+                    }}
+                  >
+                    <Tooltip
+                      title='LogOut'
+                      componentsProps={{
+                        tooltip: {
+                          sx: {
+                            fontSize: "1.25rem",
+                            mt: "0.5rem",
+                          },
+                        },
+                      }}
+                    >
+                      <LogoutIcon sx={{ fontSize: "2.5rem" }} />
+                    </Tooltip>
+                  </IconButton>
+                </Grid>
               </Grid>
               <Grid
                 item

@@ -12,11 +12,13 @@ import {
   SignupPayload,
   SignupResponse,
   StudentDashboardResponse,
+  StudentInfo,
   StudentLoginPayload,
   StudentLoginResponse,
   StudentResourceResponse,
   TeacherAssignmentsResponse,
   TeacherDashboardResponse,
+  TeacherInfo,
   TeacherResourcesResponse,
   UploadAssignmentPayload,
 } from "@/app/utils/models/api.interface";
@@ -183,6 +185,12 @@ export const remoteClassApi = createApi({
       }),
     }),
 
+    getTeacherProfile: builder.query<TeacherInfo, void>({
+      query: () => "profile/teacher",
+      transformResponse: (response: { success: boolean; data: TeacherInfo }) =>
+        response.data,
+    }),
+
     //Student dashboard
     getStudentDashboard: builder.query<StudentDashboardResponse, void>({
       query: () => ({
@@ -201,6 +209,11 @@ export const remoteClassApi = createApi({
         url: "/assignment/student/all",
         method: "GET",
       }),
+    }),
+    getStudentProfile: builder.query<StudentInfo, void>({
+      query: () => "/profile/student",
+      transformResponse: (response: { success: boolean; data: StudentInfo }) =>
+        response.data,
     }),
   }),
 });
@@ -224,4 +237,6 @@ export const {
   useGetStudentResourcesQuery,
   useGetStudentAssignmentQuery,
   useDeleteClassMutation,
+  useGetStudentProfileQuery,
+  useGetTeacherProfileQuery,
 } = remoteClassApi;
