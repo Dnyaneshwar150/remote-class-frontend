@@ -207,18 +207,20 @@ export interface StudentDashboardResponse {
 
 export type AcademicYear = "FY" | "SY" | "TY" | "BE";
 
-export interface Resource {
+interface StudentResource {
+  _id: string;
   title: string;
+  year: string;
+  subject: string;
   fileUrl: string;
   fileType: string;
-  uploadedAt: string;
+  teacherId: string;
+  createdAt: string;
+  __v: number;
 }
 
 export interface StudentResourceResponse {
   success: boolean;
-  data: {
-    [year in AcademicYear]?: {
-      [subject: string]: Resource[];
-    };
-  };
+  message: string;
+  data: StudentResource[];
 }

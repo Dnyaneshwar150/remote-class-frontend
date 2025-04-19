@@ -153,19 +153,17 @@ export default function Home() {
           spacing={2}
         >
           {resourcesData &&
-            Object.entries(resourcesData.data).flatMap(([year, subjects]) =>
-              Object.entries(subjects).flatMap(([subject, resources]) =>
-                resources.map((res, index) => (
-                  <ResourceCard
-                    key={`${year}-${subject}-${index}`}
-                    title={res.title}
-                    className={subject}
-                    color={classColors[index % classColors.length]}
-                    downloadUrl={res.fileUrl}
-                  />
-                )),
-              ),
-            )}
+            resourcesData.data.map((res, index) => {
+              return (
+                <ResourceCard
+                  key={`${res.year}-${res.subject}-${index}`}
+                  title={res.title}
+                  className={res.subject}
+                  color={classColors[index % classColors.length]}
+                  downloadUrl={res.fileUrl}
+                />
+              );
+            })}
         </Grid>
       )}
     </LayoutWrapper>

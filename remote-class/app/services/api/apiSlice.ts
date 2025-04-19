@@ -192,7 +192,7 @@ export const remoteClassApi = createApi({
     }),
     getStudentResources: builder.query<StudentResourceResponse, void>({
       query: () => ({
-        url: "/resources",
+        url: "/resources/student-resource",
         method: "GET",
       }),
     }),
