@@ -98,8 +98,6 @@ export default function Home() {
 const SignupForm = () => {
   const [signup] = useSignupMutation();
 
-  
-
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -113,26 +111,26 @@ const SignupForm = () => {
   const handleChange = (field: keyof typeof formData, value: string) => {
     setFormData((prev: typeof formData) => ({ ...prev, [field]: value }));
   };
-  
+
   const handleSignup = async (formData: SignupPayload) => {
     // Check for any empty fields
     const missingFields = Object.entries(formData)
       .filter(([value]) => !value.trim())
       .map(([key]) => key);
-  
+
     if (missingFields.length > 0) {
       toast.error(`Please fill in: ${missingFields.join(", ")}`);
       return;
     }
-  
+
     try {
       const response = await signup(formData).unwrap();
-  
+
       if (!response.success) {
         toast.error(response.message || "Signup failed ❌");
         return;
       }
-  
+
       toast.success(response.message || "Signup successful 🎉");
       localStorage.setItem("authToken", response.data.token);
       router.push("/auth/login");
@@ -181,9 +179,9 @@ const SignupForm = () => {
       <CustomAutocomplete
         label={"Select department"}
         options={[
-          "Computer Scince",
-          "Information Technology",
-          "Electrical",
+          "Computer Engineering",
+          "Civil Engineering",
+          "Electronics",
           "E & TC",
         ]}
         selectedOption={formData.department}
@@ -212,4 +210,3 @@ const SignupForm = () => {
     </Grid>
   );
 };
-

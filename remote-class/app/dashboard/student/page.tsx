@@ -1,6 +1,6 @@
 "use client";
 
-import { Grid, IconButton } from "@mui/material";
+import { Grid, IconButton, Tooltip } from "@mui/material";
 import ClassIcon from "@mui/icons-material/Class";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useRouter } from "next/navigation";
@@ -18,111 +18,134 @@ export default function Home() {
     router.push("/auth/login");
   };
 
- const handleSubmittedAssignmentCardClick = () => {
-  console.log("pending assignment")
- }
+  const handleSubmittedAssignmentCardClick = () => {
+    console.log("pending assignment");
+  };
 
- const handlePendingAssingmentCardClick = () => {
-  console.log("pending assignment")
- }
-
+  const handlePendingAssingmentCardClick = () => {
+    console.log("pending assignment");
+  };
 
   const handleResourcesCardClick = () => {
     router.push(`/dashboard/student/resources`);
   };
   return (
     <LayoutWrapper>
-      {
-        isStudentDashboardLoading ? (
-          <Grid container justifyContent={"center"}> <Loader/> </Grid>
-        ):studentDashboardData && (
+      {isStudentDashboardLoading ? (
+        <Grid
+          container
+          justifyContent={"center"}
+        >
+          {" "}
+          <Loader />{" "}
+        </Grid>
+      ) : (
+        studentDashboardData && (
           <>
-          <Grid
-            container
-            flexDirection={"column"}
-          >
-            {" "}
             <Grid
-      item
-      container
-      alignItems="center"
-      justifyContent="space-between"
-      fontSize={"3.6rem"}
-      fontWeight={"var(--fontweight-extra-bold)"}
-    >
-      <div>Welcome</div>
-      <IconButton
-        onClick={handleLogout}
-        sx={{
-          color: "var(--black)",
-          border: "2px solid var(--black)",
-          borderRadius: "1rem",
-          padding: "0.5rem",
-        }}
-      >
-        <LogoutIcon sx={{ fontSize: "2.5rem" }} />
-      </IconButton>
-    </Grid>
-            <Grid
-              item
-              fontSize={"3.6rem"}
-              fontWeight={"var(--fontweight-extra-bold)"}
+              container
+              flexDirection={"column"}
             >
-              Mr.{studentDashboardData.data.studentName}
+              {" "}
+              <Grid
+                item
+                container
+                alignItems='center'
+                justifyContent='space-between'
+                fontSize={"3.6rem"}
+                fontWeight={"var(--fontweight-extra-bold)"}
+              >
+                <div>Welcome</div>
+                <IconButton
+                  onClick={handleLogout}
+                  sx={{
+                    color: "var(--black)",
+                    border: "2px solid var(--black)",
+                    borderRadius: "1rem",
+                    padding: "0.5rem",
+                  }}
+                >
+                  <Tooltip
+                    title='LogOut'
+                    componentsProps={{
+                      tooltip: {
+                        sx: {
+                          fontSize: "1.25rem",
+                          mt: "0.5rem",
+                        },
+                      },
+                    }}
+                  >
+                    <LogoutIcon sx={{ fontSize: "2.5rem" }} />
+                  </Tooltip>
+                </IconButton>
+              </Grid>
+              <Grid
+                item
+                fontSize={"3.6rem"}
+                fontWeight={"var(--fontweight-extra-bold)"}
+              >
+                Mr.{studentDashboardData.data.studentName}
+              </Grid>
             </Grid>
-          </Grid>
             <Grid
               container
               gap={"1rem"}
             >
-                <StatsCard
-                  title='Total Assignments'
-                  count={studentDashboardData.data.totalAssignments}
-                  bgColor='var(--amber)'
-                  onClick={handleResourcesCardClick} />
-                <StatsCard
-                  title='Pending Assignment'
-                  count={studentDashboardData.data.submittedAssignments}
-                  bgColor='var(--redish-orange)'
-                  onClick={handlePendingAssingmentCardClick} />
-                <StatsCard
-                  title='Submitted Assignment'
-                  count={studentDashboardData.data.submittedAssignments}
-                  bgColor='var(--teal)'
-                  onClick={handleSubmittedAssignmentCardClick} />
-                <StatsCard
-                  title='Resources'
-                  count={studentDashboardData.data.resourcesAvailable}
-                  bgColor='var(--primary-blue)'
-                  onClick={handleResourcesCardClick} />
-              </Grid><Grid
+              <StatsCard
+                title='Total Assignments'
+                count={studentDashboardData.data.totalAssignments}
+                bgColor='var(--amber)'
+                onClick={handleResourcesCardClick}
+              />
+              <StatsCard
+                title='Pending Assignment'
+                count={studentDashboardData.data.submittedAssignments}
+                bgColor='var(--redish-orange)'
+                onClick={handlePendingAssingmentCardClick}
+              />
+              <StatsCard
+                title='Submitted Assignment'
+                count={studentDashboardData.data.submittedAssignments}
+                bgColor='var(--teal)'
+                onClick={handleSubmittedAssignmentCardClick}
+              />
+              <StatsCard
+                title='Resources'
+                count={studentDashboardData.data.resourcesAvailable}
+                bgColor='var(--primary-blue)'
+                onClick={handleResourcesCardClick}
+              />
+            </Grid>
+            <Grid
+              container
+              flexDirection={"column"}
+              mt={"3rem"}
+            >
+              <Grid
+                item
                 container
-                flexDirection={"column"}
-                mt={"3rem"}
+                justifyContent={"space-between"}
+                pr={"2rem"}
               >
                 <Grid
-                  item
-                  container
-                  justifyContent={"space-between"}
-                  pr={"2rem"}
+                  fontSize={"1.25rem"}
+                  fontWeight={"var(--fontweight-bold)"}
                 >
-                  <Grid
-                    fontSize={"1.25rem"}
-                    fontWeight={"var(--fontweight-bold)"}
-                  >
-                    Message
-                  </Grid>
-                  {/* <Grid fontSize={"1.25rem"} fontWeight={"var(--fontweight-bold)"} color={"var(--redish-orange)"}>see all</Grid> */}
+                  Message
                 </Grid>
+                {/* <Grid fontSize={"1.25rem"} fontWeight={"var(--fontweight-bold)"} color={"var(--redish-orange)"}>see all</Grid> */}
+              </Grid>
 
-                <ChatCard
-                  studentName={"Archana Dube"}
-                  subLabel={"EJ5I"}
-                  count={12} />
-              </Grid></>
+              <ChatCard
+                studentName={"Archana Dube"}
+                subLabel={"EJ5I"}
+                count={12}
+              />
+            </Grid>
+          </>
         )
-      }
-     
+      )}
     </LayoutWrapper>
   );
 }

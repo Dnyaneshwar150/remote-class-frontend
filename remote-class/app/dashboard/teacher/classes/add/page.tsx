@@ -11,24 +11,20 @@ import CustomAutocomplete from "@/app/components/common/CustomAutocomplete";
 import { useCreateClassMutation } from "@/app/services/api/apiSlice";
 import { toast } from "react-hot-toast";
 
-
-
 export default function Home() {
   const router = useRouter();
-  const [createClass] =   useCreateClassMutation();
-
+  const [createClass] = useCreateClassMutation();
 
   const [classDetails, setClassDetails] = useState({
     name: "",
     year: "",
-    division: ""
+    division: "",
   });
 
-
   const handleChange = (field: keyof typeof classDetails, value: string) => {
-    setClassDetails(prev => ({
+    setClassDetails((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
@@ -42,9 +38,9 @@ export default function Home() {
       toast.error(`Please fill in: ${missingFields.join(", ")}`);
       return;
     }
-   
+
     try {
-      const response = await createClass(classDetails).unwrap(); 
+      const response = await createClass(classDetails).unwrap();
 
       if (response.success) {
         toast.success("Class created successfully! 🎉");
@@ -55,79 +51,87 @@ export default function Home() {
       }
     } catch (error) {
       const errorMessage =
-        error instanceof Error ? error.message : "Failed to create class. Please try again. ❌";
+        error instanceof Error
+          ? error.message
+          : "Failed to create class. Please try again. ❌";
       toast.error(errorMessage);
     }
   };
 
   return (
-    
-     <LayoutWrapper>
-     <Grid item alignSelf="flex-start">
-      <CrossButton onClick={() => router.back()} />
-    </Grid>
-  
-    <Grid
-      container
-      direction="column"
-      gap="1rem"
-      sx={{ pt: "2rem" }} // Smaller or zero if you like tighter spacing
-    >
-      <Grid item>
-        <Grid
-          color="var(--black)"
-          fontSize="3rem"
-          fontWeight="var(--fontweight-bold)"
-        >
-          Classes
+    <LayoutWrapper>
+      <Grid
+        item
+        alignSelf='flex-start'
+      >
+        <CrossButton onClick={() => router.back()} />
+      </Grid>
+
+      <Grid
+        container
+        direction='column'
+        gap='1rem'
+        sx={{ pt: "2rem" }} // Smaller or zero if you like tighter spacing
+      >
+        <Grid item>
+          <Grid
+            color='var(--black)'
+            fontSize='3rem'
+            fontWeight='var(--fontweight-bold)'
+          >
+            Classes
+          </Grid>
         </Grid>
-      </Grid>
-  
-      <Grid item>
-        <Grid
-          justifyContent="center"
-          fontSize="1.75rem"
-          fontWeight="var(--fontweight-medium)"
-        >
-          Wireframe is still important for ideation
+
+        <Grid item>
+          <Grid
+            justifyContent='center'
+            fontSize='1.75rem'
+            fontWeight='var(--fontweight-medium)'
+          >
+            Wireframe is still important for ideation
+          </Grid>
         </Grid>
-      </Grid>
-  
-      <Grid item>
-        <CustomInputField
-          label="Class Name"
-          value={classDetails.name}
-          onChange={(value) => handleChange("name", value)}
-        />
-      </Grid>
-  
-      <Grid item>
+
+        <Grid item>
+          <CustomInputField
+            label='Class Name'
+            value={classDetails.name}
+            onChange={(value) => handleChange("name", value)}
+          />
+        </Grid>
+
+        <Grid item>
           <CustomAutocomplete
-                  label='Year'
-                  options={["FY", "SY", "TY", "BE"]}
-                  selectedOption={classDetails.year}
-                  onSelect={(value) => handleChange("year", value || "")}
-                />
+            label='Year'
+            options={["FY", "SY", "TY", "BE"]}
+            selectedOption={classDetails.year}
+            onSelect={(value) => handleChange("year", value || "")}
+          />
+        </Grid>
+
+        <Grid item>
+          <CustomAutocomplete
+            label='Division'
+            options={["A", "B", "C", "D", "E"]}
+            selectedOption={classDetails.division}
+            onSelect={(value) => handleChange("division", value || "")}
+            isIconDisabled
+          />
+        </Grid>
+
+        <Grid
+          item
+          container
+          justifyContent='center'
+        >
+          <CommonButton
+            label='Share'
+            onClick={handleShareClassesClick}
+            sxStyles={{ width: "27.25rem" }}
+          />
+        </Grid>
       </Grid>
-  
-      <Grid item>
-        <CustomInputField
-          label="Division"
-          value={classDetails.division}
-          onChange={(value) => handleChange("division", value)}
-        />
-      </Grid>
-  
-      <Grid item container justifyContent="center">
-        <CommonButton
-          label="Share"
-          onClick={handleShareClassesClick}
-          sxStyles={{ width: "27.25rem" }}
-        />
-      </Grid>
-    </Grid>
-     </LayoutWrapper>
-    
-  
+    </LayoutWrapper>
   );
 }

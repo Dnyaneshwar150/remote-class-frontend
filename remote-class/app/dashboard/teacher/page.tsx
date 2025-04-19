@@ -8,10 +8,11 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import LayoutWrapper from "@/app/components/LayoutWrapper";
 import { useGetTeacherDashboardQuery } from "@/app/services/api/apiSlice";
 import Loader from "@/app/components/common/Loader";
+import Tooltip from "@mui/material/Tooltip";
 
 export default function Home() {
-
-  const {data:teacherDashboardData, isLoading: isDashboardDataLoading} =useGetTeacherDashboardQuery();
+  const { data: teacherDashboardData, isLoading: isDashboardDataLoading } =
+    useGetTeacherDashboardQuery();
   const teacherId = teacherDashboardData?.data.teacherId;
   const router = useRouter();
   const handleLogout = () => {
@@ -45,69 +46,87 @@ export default function Home() {
       }}
     >
       {isDashboardDataLoading ? (
-      <Loader/>
-      ): teacherDashboardData && (
+        <Loader />
+      ) : (
+        teacherDashboardData && (
           <>
-          <Grid
-            container
-            flexDirection={"column"}
-          >
-            {" "}
             <Grid
-      item
-      container
-      alignItems="center"
-      justifyContent="space-between"
-      fontSize={"3.6rem"}
-      fontWeight={"var(--fontweight-extra-bold)"}
-    >
-      <div>Welcome</div>
-      <IconButton
-        onClick={handleLogout}
-        sx={{
-          color: "var(--black)",
-          border: "2px solid var(--black)",
-          borderRadius: "1rem",
-          padding: "0.5rem",
-        }}
-      >
-        <LogoutIcon sx={{ fontSize: "2.5rem" }} />
-      </IconButton>
-    </Grid>
-            <Grid
-              item
-              fontSize={"3.6rem"}
-              fontWeight={"var(--fontweight-extra-bold)"}
+              container
+              flexDirection={"column"}
             >
-              Mr.{teacherDashboardData.data.teacherName}
+              {" "}
+              <Grid
+                item
+                container
+                alignItems='center'
+                justifyContent='space-between'
+                fontSize={"3.6rem"}
+                fontWeight={"var(--fontweight-extra-bold)"}
+              >
+                <div>Welcome</div>
+                <IconButton
+                  onClick={handleLogout}
+                  sx={{
+                    color: "var(--black)",
+                    border: "2px solid var(--black)",
+                    borderRadius: "1rem",
+                    padding: "0.5rem",
+                  }}
+                >
+                  <Tooltip
+                    title='LogOut'
+                    componentsProps={{
+                      tooltip: {
+                        sx: {
+                          fontSize: "1.25rem",
+                          mt: "0.5rem",
+                        },
+                      },
+                    }}
+                  >
+                    <LogoutIcon sx={{ fontSize: "2.5rem" }} />
+                  </Tooltip>
+                </IconButton>
+              </Grid>
+              <Grid
+                item
+                fontSize={"3.6rem"}
+                fontWeight={"var(--fontweight-extra-bold)"}
+              >
+                Mr.{teacherDashboardData.data.teacherName}
+              </Grid>
             </Grid>
-          </Grid>
-          <Grid
-            container
-            gap={"1rem"}
-          >
+            <Grid
+              container
+              gap={"1rem"}
+            >
               <StatsCard
                 title='Your Classes'
                 count={teacherDashboardData.data.classCount}
                 bgColor='var(--amber)'
-                onClick={handleClassCardClick} />
+                onClick={handleClassCardClick}
+              />
               <StatsCard
                 title='Assignments'
                 count={teacherDashboardData.data.assignmentCount}
                 bgColor='var(--primary-blue)'
-                onClick={handleAssignmentsCardClick} />
+                onClick={handleAssignmentsCardClick}
+              />
               <StatsCard
                 title='Resources'
                 count={teacherDashboardData.data.resourceCount}
                 bgColor='var(--teal)'
-                onClick={handleResourcesCardClick} />
+                onClick={handleResourcesCardClick}
+              />
               <StatsCard
-                title='Create Student' 
+                title='Create Student'
                 count={teacherDashboardData.data.classCount} //Todo add studentcount
                 bgColor='var(--white)'
                 onClick={handleStudentCreate}
-                studenCard />
-            </Grid><Grid
+                studenCard
+              />
+            </Grid>
+            <Grid
               container
               flexDirection={"column"}
               mt={"3rem"}
@@ -136,26 +155,32 @@ export default function Home() {
               <ChatCard
                 studentName={"Archana Dube"}
                 subLabel={"EJ5I"}
-                count={12} />
+                count={12}
+              />
               <ChatCard
                 studentName={"Archana Dube"}
                 subLabel={"EJ5I"}
-                count={12} />
+                count={12}
+              />
               <ChatCard
                 studentName={"Archana Dube"}
                 subLabel={"EJ5I"}
-                count={12} />
+                count={12}
+              />
               <ChatCard
                 studentName={"Archana Dube"}
                 subLabel={"EJ5I"}
-                count={12} />
+                count={12}
+              />
               <ChatCard
                 studentName={"Archana Dube"}
                 subLabel={"EJ5I"}
-                count={12} />
-            </Grid></>
+                count={12}
+              />
+            </Grid>
+          </>
+        )
       )}
-      
     </LayoutWrapper>
   );
 }

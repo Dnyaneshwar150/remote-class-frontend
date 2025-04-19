@@ -1,13 +1,18 @@
 "use client";
 
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
 import BackButton from "@/app/components/common/Button/BackButton";
 import Loader from "@/app/components/common/Loader";
 import LayoutWrapper from "@/app/components/LayoutWrapper";
-import { useGetClassesQuery } from "@/app/services/api/apiSlice";
-import { Box, Grid, Typography } from "@mui/material";
+import {
+  useDeleteClassMutation,
+  useGetClassesQuery,
+} from "@/app/services/api/apiSlice";
+import { Box, Grid, IconButton, Typography } from "@mui/material";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { toast } from "react-hot-toast";
 
 export default function Home() {
   const searchParams = useSearchParams();
@@ -18,6 +23,7 @@ export default function Home() {
   const { data: classesData, isLoading: isClassesListLoading } =
     useGetClassesQuery();
   console.log(classesData?.data);
+  const [deleteClass] = useDeleteClassMutation();
 
   const classColors = ["#ffffff", "#FFC107", "#00BCD4", "#4CAF50"]; // Add or modify colors
 
@@ -25,6 +31,15 @@ export default function Home() {
     router.push(`/dashboard/teacher/classes/add?teacherId=${teacherId}`);
   };
 
+  const handleDeleteClass = async (classId: string) => {
+    try {
+      await deleteClass(classId);
+      toast.success("Class deleted successfully!");
+    } catch (error) {
+      toast.error("Failed to delete class.");
+      console.error("Delete failed", error);
+    }
+  };
   return (
     <LayoutWrapper>
       {isClassesListLoading ? (
@@ -54,33 +69,35 @@ export default function Home() {
             >
               {classesData.data.map((classItem, index) => (
                 <ClassCard
-                  key={`classItem.name-${index}`}
+                  key={classItem._id}
+                  classId={classItem._id}
                   ClassName={classItem.name}
                   division={classItem.division}
                   year={classItem.year}
-                  bgColor={classColors[index % classColors.length]} // ← Cycles through colors
+                  bgColor={classColors[index % classColors.length]}
+                  onDelete={handleDeleteClass}
                 />
               ))}
             </Grid>
             <Box
-      position="absolute"
-      bottom="1.5rem"
-      left="50%"
-      onClick={handleAddClasses}
-      sx={{
-        transform: "translateX(-50%)",
-        backgroundColor: "var(--black)",
-        width: "3rem",
-        height: "3rem",
-        borderRadius: "50%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        cursor: "pointer",
-      }}
-    >
-      <AddIcon sx={{ color: "white", fontSize: "2rem" }} />
-    </Box>
+              position='absolute'
+              bottom='1.5rem'
+              left='50%'
+              onClick={handleAddClasses}
+              sx={{
+                transform: "translateX(-50%)",
+                backgroundColor: "var(--black)",
+                width: "3rem",
+                height: "3rem",
+                borderRadius: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+              }}
+            >
+              <AddIcon sx={{ color: "white", fontSize: "2rem" }} />
+            </Box>
           </>
         )
       )}
@@ -90,16 +107,20 @@ export default function Home() {
 
 interface ClassCardProps {
   ClassName: string;
+  classId: string;
   division: string;
   year: string;
   bgColor: string;
+  onDelete?: (classId: string) => void;
 }
 
 const ClassCard: React.FC<ClassCardProps> = ({
   ClassName,
+  classId,
   division,
   year,
   bgColor,
+  onDelete,
 }) => {
   return (
     <Grid
@@ -119,12 +140,21 @@ const ClassCard: React.FC<ClassCardProps> = ({
       <Grid item>
         <Grid fontSize={"1.75rem"}>{ClassName}</Grid>
         <Grid fontSize={"1.08rem"}>
-        Division: {division}  Year: {year}
+          Division: {division} Year: {year}
         </Grid>
         <Typography fontWeight='bold'></Typography>
         <Typography fontSize='0.9rem'></Typography>
       </Grid>
-      {/* <Grid fontSize={"3.6rem"}>{count? 0}</Grid> */}
+      {onDelete && (
+        <Grid item>
+          <IconButton
+            onClick={() => onDelete(classId)}
+            sx={{ cursor: "pointer" }}
+          >
+            <DeleteOutlineIcon />{" "}
+          </IconButton>
+        </Grid>
+      )}
     </Grid>
   );
 };

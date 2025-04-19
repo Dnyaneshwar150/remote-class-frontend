@@ -33,7 +33,7 @@ export const remoteClassApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["TeacherDashboard"], // Define the tag type
+  tagTypes: ["TeacherDashboard", "Classes"], // Define the tag type
   endpoints: (builder) => ({
     //Tearcher Signup login forgot passwords and logout
     login: builder.mutation<LoginResponse, LoginPayload>({
@@ -155,6 +155,7 @@ export const remoteClassApi = createApi({
         url: "/class/list",
         method: "GET",
       }),
+      providesTags: ["Classes"],
     }),
     //create clases
     createClass: builder.mutation<CreateClassResponse, CreateClassPayload>({
@@ -164,6 +165,15 @@ export const remoteClassApi = createApi({
         body: data, // The payload to be sent in the body of the POST request
       }),
       invalidatesTags: ["TeacherDashboard"], // Invalidate on success
+    }),
+
+    //delete class
+    deleteClass: builder.mutation<void, string>({
+      query: (classId) => ({
+        url: `class/delete/${classId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Classes"],
     }),
     //dashboard
     getTeacherDashboard: builder.query<TeacherDashboardResponse, void>({
@@ -182,13 +192,13 @@ export const remoteClassApi = createApi({
     }),
     getStudentResources: builder.query<StudentResourceResponse, void>({
       query: () => ({
-        url: "/resources/shared",
+        url: "/resources",
         method: "GET",
       }),
     }),
     getStudentAssignment: builder.query<TeacherAssignmentsResponse, void>({
       query: () => ({
-        url: "/assignment/all",
+        url: "/assignment/student/all",
         method: "GET",
       }),
     }),
@@ -213,4 +223,5 @@ export const {
   useCreateClassMutation,
   useGetStudentResourcesQuery,
   useGetStudentAssignmentQuery,
+  useDeleteClassMutation,
 } = remoteClassApi;

@@ -170,8 +170,22 @@ export interface CreateClassResponse {
 }
 export interface TeacherAssignmentsResponse {
   success: boolean;
-  message: string;
-  data: TeacherAssignment[];
+  data: Assignment[];
+}
+
+export interface Assignment {
+  _id: string;
+  assignmentId: string;
+  title: string;
+  description: string;
+  fileUrl: string | null;
+  fileType: string | null;
+  year: string;
+  division: string;
+  teacherId: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 }
 
 export interface StudentDashboardData {
