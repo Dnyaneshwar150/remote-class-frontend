@@ -246,3 +246,40 @@ export interface TeacherInfo {
   department: string;
   role: string;
 }
+
+//chat interface
+export interface GroupCreatePayload {
+  year: string;
+  division: string;
+  allowStudentToSend: boolean;
+}
+
+export interface GroupResponse {
+  success: boolean;
+  message: string;
+  data: {
+    groupId: number;
+    groupName: string;
+    year: string;
+    division: string;
+    allowStudentToSend: boolean;
+    createdBy: string;
+    _id: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  };
+}
+
+export interface TeacherGroup {
+  _id: string;
+  groupId: number;
+  groupName: string;
+  year: string;
+  division: string;
+  allowStudentToSend: boolean;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}

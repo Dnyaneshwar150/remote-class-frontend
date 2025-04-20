@@ -6,6 +6,8 @@ import {
   CreateStudentPayload,
   CreateStudentResponse,
   ForgetPasswordPayload,
+  GroupCreatePayload,
+  GroupResponse,
   LoginPayload,
   LoginResponse,
   ResetPasswordPayload,
@@ -18,6 +20,7 @@ import {
   StudentResourceResponse,
   TeacherAssignmentsResponse,
   TeacherDashboardResponse,
+  TeacherGroup,
   TeacherInfo,
   TeacherResourcesResponse,
   UploadAssignmentPayload,
@@ -183,6 +186,7 @@ export const remoteClassApi = createApi({
         url: "/dashboard/teacher",
         method: "GET",
       }),
+      providesTags: ["TeacherDashboard"],
     }),
 
     getTeacherProfile: builder.query<TeacherInfo, void>({
@@ -210,10 +214,29 @@ export const remoteClassApi = createApi({
         method: "GET",
       }),
     }),
+
     getStudentProfile: builder.query<StudentInfo, void>({
       query: () => "/profile/student",
       transformResponse: (response: { success: boolean; data: StudentInfo }) =>
         response.data,
+    }),
+
+    //chat apis
+    createChatGroup: builder.mutation<GroupResponse, GroupCreatePayload>({
+      query: (payload) => ({
+        url: "/gc/create",
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["TeacherDashboard"],
+    }),
+
+    getTeacherGroups: builder.query<TeacherGroup[], void>({
+      query: () => "/gc/teacher-groups",
+      transformResponse: (response: {
+        success: boolean;
+        data: TeacherGroup[];
+      }) => response.data,
     }),
   }),
 });
@@ -239,4 +262,6 @@ export const {
   useDeleteClassMutation,
   useGetStudentProfileQuery,
   useGetTeacherProfileQuery,
+  useCreateChatGroupMutation,
+  useGetTeacherGroupsQuery,
 } = remoteClassApi;

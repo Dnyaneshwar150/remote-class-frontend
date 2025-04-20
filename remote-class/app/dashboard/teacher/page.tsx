@@ -1,15 +1,33 @@
 "use client";
 
-import { Grid, IconButton } from "@mui/material";
+import {
+  Box,
+  FormControlLabel,
+  Grid,
+  IconButton,
+  Modal,
+  Paper,
+  Switch,
+} from "@mui/material";
 import ClassIcon from "@mui/icons-material/Class";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useRouter } from "next/navigation";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import LayoutWrapper from "@/app/components/LayoutWrapper";
-import { useGetTeacherDashboardQuery } from "@/app/services/api/apiSlice";
+import {
+  useCreateChatGroupMutation,
+  useGetTeacherDashboardQuery,
+  useGetTeacherGroupsQuery,
+} from "@/app/services/api/apiSlice";
 import Loader from "@/app/components/common/Loader";
 import Tooltip from "@mui/material/Tooltip";
 import PersonIcon from "@mui/icons-material/Person";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import GroupsIcon from "@mui/icons-material/Groups";
+import { useState } from "react";
+import CustomAutocomplete from "@/app/components/common/CustomAutocomplete";
+import CommonButton from "@/app/components/common/Button/CommonButton";
+import { toast } from "react-hot-toast";
 
 export default function Home() {
   const { data: teacherDashboardData, isLoading: isDashboardDataLoading } =
@@ -20,7 +38,43 @@ export default function Home() {
     localStorage.removeItem("authToken");
     router.push("/auth/login");
   };
+  const [createGroup] = useCreateChatGroupMutation();
+  const [showModal, setShowModal] = useState(false);
 
+  const [groupFormData, setGroupFormData] = useState<{
+    year: string;
+    division: string;
+    allowStudentToSend: boolean;
+  }>({
+    year: "",
+    division: "",
+    allowStudentToSend: false,
+  });
+  const handleChange = (
+    field: keyof typeof groupFormData,
+    value: string | boolean,
+  ) => {
+    setGroupFormData((prev: typeof groupFormData) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleCreateGroupClick = async () => {
+    if (!groupFormData.year || !groupFormData.division) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+
+    try {
+      const result = await createGroup(groupFormData).unwrap();
+      toast.success(`Group created: ${result.data.groupName}`);
+    } catch (err) {
+      console.error("Failed to create group:", err);
+      toast.error("Error creating group. Please try again.");
+    }
+    setShowModal(false);
+  };
   const handleClassCardClick = () => {
     router.push(`/dashboard/teacher/classes?teacherId=${teacherId}`);
   };
@@ -168,49 +222,117 @@ export default function Home() {
                 pr={"2rem"}
               >
                 <Grid
+                  item
                   fontSize={"1.25rem"}
                   fontWeight={"var(--fontweight-bold)"}
                 >
                   Message
                 </Grid>
+
                 <Grid
-                  fontSize={"1.25rem"}
-                  fontWeight={"var(--fontweight-bold)"}
-                  color={"var(--redish-orange)"}
+                  item
+                  sx={{ cursor: "pointer" }}
                 >
-                  see all
+                  <Tooltip title='Create Group'>
+                    <IconButton onClick={() => setShowModal(true)}>
+                      <GroupAddIcon
+                        fontSize='large'
+                        style={{ color: "var(--redish-orange)" }}
+                      />
+                    </IconButton>
+                  </Tooltip>
                 </Grid>
               </Grid>
 
-              <ChatCard
-                studentName={"Archana Dube"}
-                subLabel={"EJ5I"}
-                count={12}
-              />
-              <ChatCard
-                studentName={"Archana Dube"}
-                subLabel={"EJ5I"}
-                count={12}
-              />
-              <ChatCard
-                studentName={"Archana Dube"}
-                subLabel={"EJ5I"}
-                count={12}
-              />
-              <ChatCard
-                studentName={"Archana Dube"}
-                subLabel={"EJ5I"}
-                count={12}
-              />
-              <ChatCard
-                studentName={"Archana Dube"}
-                subLabel={"EJ5I"}
-                count={12}
-              />
+              <TeachersMessageComponent />
             </Grid>
           </>
         )
       )}
+      <Modal
+        open={showModal}
+        onClose={() => setShowModal(false)}
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            left: "50%",
+            bottom: "0",
+            transform: "translateX(-50%)",
+            bgcolor: "var(--primary-white)",
+            borderRadius: 2,
+            boxShadow: 24,
+            p: 3,
+            width: "768px",
+          }}
+        >
+          <Grid
+            color={"var(--black)"}
+            fontWeight={"var(--fontweight-extra-bold)"}
+            fontSize={"1.5rem"}
+            mb={"2rem"}
+          >
+            Create Group For the messages{" "}
+          </Grid>
+          <Grid
+            container
+            gap={"2rem"}
+          >
+            <Grid
+              item
+              width={"100%"}
+            >
+              <CustomAutocomplete
+                label='Year'
+                options={["FY", "SY", "TY", "BE"]}
+                selectedOption={groupFormData.year}
+                onSelect={(value) => handleChange("year", value)}
+                isIconDisabled
+              />
+            </Grid>
+            <Grid
+              item
+              width={"100%"}
+            >
+              <CustomAutocomplete
+                label='Division'
+                options={["A", "B", "C", "D", "E"]}
+                selectedOption={groupFormData.division}
+                onSelect={(value) => handleChange("division", value)}
+                isIconDisabled
+              />
+            </Grid>
+
+            <Grid
+              item
+              width={"100%"}
+            >
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={groupFormData.allowStudentToSend}
+                    onChange={(e) =>
+                      handleChange("allowStudentToSend", e.target.checked)
+                    }
+                    inputProps={{
+                      "aria-label": "Allow student to send messages",
+                    }}
+                  />
+                }
+                label='Would you like to allow messages from the student?'
+              />
+            </Grid>
+
+            <Grid item>
+              <CommonButton
+                label='Create Group'
+                onClick={handleCreateGroupClick}
+                sxStyles={{ width: "27.25rem" }}
+              />
+            </Grid>
+          </Grid>
+        </Box>
+      </Modal>
     </LayoutWrapper>
   );
 }
@@ -268,53 +390,86 @@ const StatsCard: React.FC<{
 
 const ChatCard: React.FC<{
   studentName: string;
-  count: number;
   subLabel: string;
-}> = ({ studentName, count, subLabel }) => {
+  allowStudent: boolean;
+}> = ({ studentName, subLabel, allowStudent }) => {
+  return (
+    <Paper
+      elevation={3}
+      sx={{
+        borderRadius: "1.5rem",
+        p: "1rem",
+        width: "100%",
+        backgroundColor: "var(--primary-white)",
+        height: "6rem",
+      }}
+    >
+      <Grid
+        container
+        alignItems='center'
+        spacing={2}
+      >
+        <Grid item>
+          <GroupsIcon
+            style={{
+              color: allowStudent ? "var(--cyan)" : "var(--disabled-grey)",
+              fontSize: "3rem",
+            }}
+          />
+        </Grid>
+        <Grid item>
+          <Grid
+            color={"var(--black)"}
+            fontWeight={"var(--fontweight-extra-bold)"}
+            fontSize={"1.75rem"}
+            className='ellipsis-text'
+          >
+            {studentName}
+          </Grid>
+          <Grid
+            color={"var(--dark-grey)"}
+            fontWeight={"var(--fontweight-bold)"}
+            fontSize={"1rem"}
+          >
+            {subLabel}
+          </Grid>
+        </Grid>
+
+        <Grid
+          color={"var(--light-grey)"}
+          fontWeight={"var(--fontweight-extra-bold)"}
+          fontSize={"1.8rem"}
+          ml={"auto"}
+          mt={"1.5rem"}
+        >
+          0{Math.round(Math.random() * 9 + 1)}
+        </Grid>
+      </Grid>
+    </Paper>
+  );
+};
+
+const TeachersMessageComponent = () => {
+  const { data: teacherGroups, isLoading: isTeachersDataLoading } =
+    useGetTeacherGroupsQuery();
   return (
     <Grid
       container
-      pr={"2rem"}
-      py={"1.33rem"}
       gap={"1rem"}
-      alignItems={"center"}
     >
-      <Grid
-        item
-        border={"2px solid var(--black)"}
-        borderRadius={"50%"}
-        height={"6rem"}
-        width={"6rem"}
-      >
-        {" "}
-      </Grid>
-      {/* TODO  add avtar here */}
-      <Grid item>
-        <Grid
-          color={"var(--black)"}
-          fontWeight={"var(--fontweight-extra-bold)"}
-          fontSize={"1.75rem"}
-          className='ellipsis-text'
-        >
-          {studentName}{" "}
-        </Grid>
-        <Grid
-          color={"var(--dark-grey)"}
-          fontWeight={"var(--fontweight-bold)"}
-          fontSize={"1rem"}
-        >
-          {subLabel}
-        </Grid>
-      </Grid>
-
-      <Grid
-        color={"var(--light-grey)"}
-        fontWeight={"var(--fontweight-extra-bold)"}
-        fontSize={"1.4rem"}
-        ml={"auto"}
-      >
-        {count}
-      </Grid>
+      {isTeachersDataLoading ? (
+        <Loader />
+      ) : (
+        teacherGroups &&
+        teacherGroups.map((chat) => (
+          <ChatCard
+            key={chat._id}
+            studentName={chat.groupName}
+            subLabel={`${chat.year}-${chat.division}`}
+            allowStudent={chat.allowStudentToSend}
+          />
+        ))
+      )}
     </Grid>
   );
 };
