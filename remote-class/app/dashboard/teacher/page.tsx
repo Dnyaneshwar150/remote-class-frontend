@@ -392,7 +392,8 @@ const ChatCard: React.FC<{
   studentName: string;
   subLabel: string;
   allowStudent: boolean;
-}> = ({ studentName, subLabel, allowStudent }) => {
+  onClick?: () => void;
+}> = ({ studentName, subLabel, allowStudent, onClick }) => {
   return (
     <Paper
       elevation={3}
@@ -408,6 +409,8 @@ const ChatCard: React.FC<{
         container
         alignItems='center'
         spacing={2}
+        onClick={onClick}
+        sx={{ cursor: "pointer" }}
       >
         <Grid item>
           <GroupsIcon
@@ -450,8 +453,13 @@ const ChatCard: React.FC<{
 };
 
 const TeachersMessageComponent = () => {
+  const router = useRouter();
+
   const { data: teacherGroups, isLoading: isTeachersDataLoading } =
     useGetTeacherGroupsQuery();
+  const handleGroupChatClick = (groupId: number) => {
+    router.push(`/dashboard/teacher/chat?groupId=${groupId}`);
+  };
   return (
     <Grid
       container
@@ -467,6 +475,7 @@ const TeachersMessageComponent = () => {
             studentName={chat.groupName}
             subLabel={`${chat.year}-${chat.division}`}
             allowStudent={chat.allowStudentToSend}
+            onClick={() => handleGroupChatClick(chat.groupId)}
           />
         ))
       )}

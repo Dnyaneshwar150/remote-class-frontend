@@ -283,3 +283,57 @@ export interface TeacherGroup {
   updatedAt: string;
   __v: number;
 }
+
+export interface GroupMessage {
+  _id: string;
+  groupId: string;
+  senderRole: string;
+  senderId: string;
+  senderName: string;
+  message: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+export interface GroupMessageResponse {
+  success: boolean;
+  data: GroupMessage[];
+}
+
+export interface GroupInfoResponse {
+  success: boolean;
+  data: {
+    _id: string;
+    groupId: number;
+    groupName: string;
+    year: string;
+    division: string;
+    allowStudentToSend: boolean;
+    createdBy: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  };
+}
+
+export interface SendMessageResponse {
+  success: boolean;
+  message: string;
+  data: {
+    groupId: string;
+    senderRole: string;
+    senderId: string;
+    senderName: string;
+    message: string;
+    _id: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  };
+}
+
+export interface SendMessageRequest {
+  groupId: number;
+  message: string;
+}

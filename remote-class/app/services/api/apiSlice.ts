@@ -7,10 +7,14 @@ import {
   CreateStudentResponse,
   ForgetPasswordPayload,
   GroupCreatePayload,
+  GroupInfoResponse,
+  GroupMessageResponse,
   GroupResponse,
   LoginPayload,
   LoginResponse,
   ResetPasswordPayload,
+  SendMessageRequest,
+  SendMessageResponse,
   SignupPayload,
   SignupResponse,
   StudentDashboardResponse,
@@ -38,7 +42,7 @@ export const remoteClassApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["TeacherDashboard", "Classes"], // Define the tag type
+  tagTypes: ["TeacherDashboard", "Classes", "GroupMessages"], // Define the tag type
   endpoints: (builder) => ({
     //Tearcher Signup login forgot passwords and logout
     login: builder.mutation<LoginResponse, LoginPayload>({
@@ -238,6 +242,29 @@ export const remoteClassApi = createApi({
         data: TeacherGroup[];
       }) => response.data,
     }),
+
+    //get Group messages
+    getGroupMessages: builder.query<GroupMessageResponse, number>({
+      query: (groupId) => `/gc/messages?groupId=${groupId}`,
+      providesTags: ["GroupMessages"],
+    }),
+
+    getGroupInfo: builder.query<GroupInfoResponse, number>({
+      query: (groupId) => `/gc/group-info?groupId=${groupId}`,
+    }),
+
+    //send message for teacher
+    sendTeacherMessage: builder.mutation<
+      SendMessageResponse,
+      SendMessageRequest
+    >({
+      query: (body) => ({
+        url: "gc/teacher-message",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["GroupMessages"],
+    }),
   }),
 });
 
@@ -264,4 +291,7 @@ export const {
   useGetTeacherProfileQuery,
   useCreateChatGroupMutation,
   useGetTeacherGroupsQuery,
+  useGetGroupMessagesQuery,
+  useGetGroupInfoQuery,
+  useSendTeacherMessageMutation,
 } = remoteClassApi;
