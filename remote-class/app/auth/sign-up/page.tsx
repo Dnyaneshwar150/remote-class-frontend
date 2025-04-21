@@ -15,7 +15,6 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { SignupPayload } from "@/app/utils/models/api.interface";
-import router from "next/router";
 import LayoutWrapper from "@/app/components/LayoutWrapper";
 import CustomAutocomplete from "@/app/components/common/CustomAutocomplete";
 
@@ -97,6 +96,7 @@ export default function Home() {
 
 const SignupForm = () => {
   const [signup] = useSignupMutation();
+  const router = useRouter();
 
   const [formData, setFormData] = useState({
     firstname: "",
@@ -125,15 +125,9 @@ const SignupForm = () => {
 
     try {
       const response = await signup(formData).unwrap();
-
-      if (!response.success) {
-        toast.error(response.message || "Signup failed ❌");
-        return;
-      }
-
       toast.success(response.message || "Signup successful 🎉");
       localStorage.setItem("authToken", response.data.token);
-      router.push("/auth/login");
+      router.push("/dashboard/teacher");
     } catch {
       toast.error("Signup failed. Please try again ❌");
     }
