@@ -337,3 +337,21 @@ export interface SendMessageRequest {
   groupId: number;
   message: string;
 }
+
+export interface StudentGroup {
+  _id: string;
+  groupId: number;
+  groupName: string;
+  year: string;
+  division: string;
+  allowStudentToSend: boolean;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+export interface StudentGroupsResponse {
+  success: boolean;
+  data: StudentGroup[];
+}

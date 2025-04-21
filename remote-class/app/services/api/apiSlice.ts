@@ -18,6 +18,7 @@ import {
   SignupPayload,
   SignupResponse,
   StudentDashboardResponse,
+  StudentGroupsResponse,
   StudentInfo,
   StudentLoginPayload,
   StudentLoginResponse,
@@ -265,6 +266,24 @@ export const remoteClassApi = createApi({
       }),
       invalidatesTags: ["GroupMessages"],
     }),
+
+    //get Student Group
+    getStudentGroups: builder.query<StudentGroupsResponse, void>({
+      query: () => "gc/student-groups",
+    }),
+
+    //send student message
+    sendStudentMessage: builder.mutation<
+      SendMessageResponse,
+      SendMessageRequest
+    >({
+      query: (body) => ({
+        url: "gc/student-message",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["GroupMessages"],
+    }),
   }),
 });
 
@@ -294,4 +313,6 @@ export const {
   useGetGroupMessagesQuery,
   useGetGroupInfoQuery,
   useSendTeacherMessageMutation,
+  useGetStudentGroupsQuery,
+  useSendStudentMessageMutation,
 } = remoteClassApi;

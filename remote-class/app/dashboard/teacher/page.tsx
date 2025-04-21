@@ -6,13 +6,10 @@ import {
   Grid,
   IconButton,
   Modal,
-  Paper,
   Switch,
 } from "@mui/material";
-import ClassIcon from "@mui/icons-material/Class";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useRouter } from "next/navigation";
-import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import LayoutWrapper from "@/app/components/LayoutWrapper";
 import {
   useCreateChatGroupMutation,
@@ -23,11 +20,12 @@ import Loader from "@/app/components/common/Loader";
 import Tooltip from "@mui/material/Tooltip";
 import PersonIcon from "@mui/icons-material/Person";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import GroupsIcon from "@mui/icons-material/Groups";
 import { useState } from "react";
 import CustomAutocomplete from "@/app/components/common/CustomAutocomplete";
 import CommonButton from "@/app/components/common/Button/CommonButton";
 import { toast } from "react-hot-toast";
+import ChatCard from "@/app/components/common/ChatCard";
+import StatsCard from "@/app/components/common/StatsCard";
 
 export default function Home() {
   const { data: teacherDashboardData, isLoading: isDashboardDataLoading } =
@@ -336,121 +334,6 @@ export default function Home() {
     </LayoutWrapper>
   );
 }
-
-const StatsCard: React.FC<{
-  title: string;
-  count: number;
-  bgColor: string;
-  onClick: () => void;
-  studenCard?: boolean;
-}> = ({ title, bgColor, count, onClick, studenCard }) => {
-  return (
-    <Grid
-      width={"12rem"}
-      height={"17.5rem"}
-      onClick={onClick}
-      sx={{ cursor: "pointer" }}
-    >
-      <Grid
-        borderRadius={"1.3rem"}
-        height={"13rem"}
-        border={"2px solid var(--black)"}
-        sx={{ backgroundColor: bgColor }}
-        container
-        justifyContent={"center"}
-        alignItems={"center"}
-      >
-        {studenCard ? (
-          <PersonAddAlt1Icon
-            style={{ color: "var(--dark-grey)", fontSize: "5rem" }}
-          />
-        ) : (
-          <ClassIcon
-            style={{ color: "var(--primary-white)", fontSize: "5rem" }}
-          />
-        )}
-      </Grid>
-      <Grid
-        color={"var(--black)"}
-        fontWeight={"var(--fontweight-extra-bold)"}
-        mt={"0.6rem"}
-        fontSize={"1.5rem"}
-      >
-        {title}
-      </Grid>
-      <Grid
-        fontWeight={"var(--fontweight-bold)"}
-        color={"var(--light-grey)"}
-      >
-        Total- &nbsp;{count}{" "}
-      </Grid>
-    </Grid>
-  );
-};
-
-const ChatCard: React.FC<{
-  studentName: string;
-  subLabel: string;
-  allowStudent: boolean;
-  onClick?: () => void;
-}> = ({ studentName, subLabel, allowStudent, onClick }) => {
-  return (
-    <Paper
-      elevation={3}
-      sx={{
-        borderRadius: "1.5rem",
-        p: "1rem",
-        width: "100%",
-        backgroundColor: "var(--primary-white)",
-        height: "6rem",
-      }}
-    >
-      <Grid
-        container
-        alignItems='center'
-        spacing={2}
-        onClick={onClick}
-        sx={{ cursor: "pointer" }}
-      >
-        <Grid item>
-          <GroupsIcon
-            style={{
-              color: allowStudent ? "var(--cyan)" : "var(--disabled-grey)",
-              fontSize: "3rem",
-            }}
-          />
-        </Grid>
-        <Grid item>
-          <Grid
-            color={"var(--black)"}
-            fontWeight={"var(--fontweight-extra-bold)"}
-            fontSize={"1.75rem"}
-            className='ellipsis-text'
-          >
-            {studentName}
-          </Grid>
-          <Grid
-            color={"var(--dark-grey)"}
-            fontWeight={"var(--fontweight-bold)"}
-            fontSize={"1rem"}
-          >
-            {subLabel}
-          </Grid>
-        </Grid>
-
-        <Grid
-          color={"var(--light-grey)"}
-          fontWeight={"var(--fontweight-extra-bold)"}
-          fontSize={"1.8rem"}
-          ml={"auto"}
-          mt={"1.5rem"}
-        >
-          0{Math.round(Math.random() * 9 + 1)}
-        </Grid>
-      </Grid>
-    </Paper>
-  );
-};
 
 const TeachersMessageComponent = () => {
   const router = useRouter();
