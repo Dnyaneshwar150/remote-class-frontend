@@ -67,8 +67,7 @@ export default function Home() {
     try {
       const result = await createGroup(groupFormData).unwrap();
       toast.success(`Group created: ${result.data.groupName}`);
-    } catch (err) {
-      console.error("Failed to create group:", err);
+    } catch {
       toast.error("Error creating group. Please try again.");
     }
     setShowModal(false);
@@ -83,7 +82,6 @@ export default function Home() {
 
   const handleResourcesCardClick = () => {
     router.push(`/dashboard/teacher/resources?teacherId=${teacherId}`);
-    console.log("resources click");
   };
 
   const handleStudentCreate = () => {

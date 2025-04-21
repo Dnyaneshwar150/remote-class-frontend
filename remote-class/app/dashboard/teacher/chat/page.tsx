@@ -28,7 +28,6 @@ export default function Home() {
   const groupId = searchParams[1];
   const { data: groupData, isLoading: isGroupDataLoading } =
     useGetGroupInfoQuery(Number(groupId));
-  console.log(groupData);
 
   return (
     <LayoutWrapper>

@@ -22,7 +22,6 @@ export default function Home() {
 
   const { data: classesData, isLoading: isClassesListLoading } =
     useGetClassesQuery();
-  console.log(classesData?.data);
   const [deleteClass] = useDeleteClassMutation();
 
   const classColors = ["#ffffff", "#FFC107", "#00BCD4", "#4CAF50"]; // Add or modify colors
@@ -35,9 +34,8 @@ export default function Home() {
     try {
       await deleteClass(classId);
       toast.success("Class deleted successfully!");
-    } catch (error) {
+    } catch {
       toast.error("Failed to delete class.");
-      console.error("Delete failed", error);
     }
   };
   return (

@@ -19,7 +19,6 @@ export default function Home() {
     useGetStudentResourcesQuery();
   const { data: assignmentData, isLoading: assignmentDataLoading } =
     useGetStudentAssignmentQuery();
-  console.log(assignmentData);
   const classColors = ["#ffffff", "#FFC107", "#00BCD4", "#4CAF50"];
 
   const [tabIndex, setTabIndex] = useState(1);

@@ -18,7 +18,6 @@ export const AssignmentCard: React.FC<AssignmentCardProps> = ({
   description,
   downloadUrl,
 }) => {
-  console.log(downloadUrl);
   return (
     <Grid
       item
