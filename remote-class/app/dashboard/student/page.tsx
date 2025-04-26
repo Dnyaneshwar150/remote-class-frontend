@@ -116,7 +116,7 @@ export default function Home() {
               fontSize={"3.6rem"}
               fontWeight={"var(--fontweight-extra-bold)"}
             >
-              Mr.{studentDashboardData.data.studentName}
+              {studentDashboardData.data.studentName}
             </Grid>
           </Grid>
 
