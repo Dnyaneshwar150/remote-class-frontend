@@ -3,11 +3,14 @@ import BackButton from "@/app/components/common/Button/BackButton";
 import Loader from "@/app/components/common/Loader";
 import LayoutWrapper from "@/app/components/LayoutWrapper";
 import toast from "react-hot-toast";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 import {
+  useDeleteGroupMutation,
   useGetGroupInfoQuery,
   useGetGroupMessagesQuery,
   useSendTeacherMessageMutation,
+  useUpdateGroupStatusMutation,
 } from "@/app/services/api/apiSlice";
 import {
   Avatar,
@@ -16,6 +19,8 @@ import {
   IconButton,
   InputBase,
   Paper,
+  Switch,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -28,6 +33,48 @@ export default function Home() {
   const groupId = searchParams[1];
   const { data: groupData, isLoading: isGroupDataLoading } =
     useGetGroupInfoQuery(Number(groupId));
+  const [deleteGroup] = useDeleteGroupMutation();
+  const [updateGroupStatus] = useUpdateGroupStatusMutation();
+
+  const [allowStudentToSend, setAllowStudentToSend] = useState(
+    groupData?.data.allowStudentToSend || false,
+  );
+
+  const handleToggleStudentMessaging = async (event) => {
+    const newStatus = event.target.checked; // true or false
+    setAllowStudentToSend(newStatus);
+
+    try {
+      const response = await updateGroupStatus({
+        groupId,
+        allowStudentToSend: newStatus,
+      }).unwrap();
+
+      if (response.success) {
+        toast.success(response.message);
+      } else {
+        toast.error(response.message || "Failed to update group.");
+      }
+    } catch {
+      toast.error("Error updating group status. Please try again.");
+    }
+  };
+
+  const handleDeleteGroup = async () => {
+    try {
+      const response = await deleteGroup(groupId).unwrap();
+
+      if (response.success) {
+        toast.success(response.message);
+        router.push("/dashboard/teacher");
+      } else {
+        toast.error(response.message || "Failed to delete group.");
+      }
+    } catch (error) {
+      toast.error("Error deleting group. Please try again.");
+      console.error(error);
+    }
+  };
 
   return (
     <LayoutWrapper>
@@ -56,6 +103,33 @@ export default function Home() {
                 }}
               >
                 {groupData.data.year + "-" + groupData.data.division}
+              </Grid>
+              <Grid
+                item
+                sx={{
+                  ml: "auto",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "1.5rem",
+                }}
+              >
+                <Tooltip
+                  title='Allow Students to Send Messages'
+                  arrow
+                >
+                  <Switch
+                    onChange={handleToggleStudentMessaging}
+                    checked={allowStudentToSend}
+                  />
+                </Tooltip>{" "}
+                <Tooltip
+                  title='Delete Group'
+                  arrow
+                >
+                  <IconButton onClick={handleDeleteGroup}>
+                    <DeleteOutlineIcon style={{ fontSize: "2.5rem" }} />
+                  </IconButton>
+                </Tooltip>{" "}
               </Grid>
             </Grid>
             <ChatSection groupId={Number(groupId)} />

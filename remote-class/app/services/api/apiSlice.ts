@@ -284,6 +284,26 @@ export const remoteClassApi = createApi({
       }),
       invalidatesTags: ["GroupMessages"],
     }),
+
+    //delete group
+    deleteGroup: builder.mutation({
+      query: (groupId) => ({
+        url: `gc/${groupId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["TeacherDashboard"],
+    }),
+
+    updateGroupStatus: builder.mutation({
+      query: ({ groupId, allowStudentToSend }) => ({
+        url: `gc/update`,
+        method: "POST",
+        body: {
+          groupId,
+          allowStudentToSend,
+        },
+      }),
+    }),
   }),
 });
 
@@ -315,4 +335,6 @@ export const {
   useSendTeacherMessageMutation,
   useGetStudentGroupsQuery,
   useSendStudentMessageMutation,
+  useDeleteGroupMutation,
+  useUpdateGroupStatusMutation,
 } = remoteClassApi;
