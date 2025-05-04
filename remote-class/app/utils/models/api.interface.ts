@@ -188,6 +188,11 @@ export interface Assignment {
   __v: number;
 }
 
+export interface StudentAssignment {
+  assignmentId: string;
+  title: string;
+}
+
 export interface StudentDashboardData {
   studentName: string;
   rollNumber: string;
@@ -197,6 +202,8 @@ export interface StudentDashboardData {
   submittedAssignments: number;
   pendingAssignments: number;
   resourcesAvailable: number;
+  submittedAssignmentsList: StudentAssignment[];
+  pendingAssignmentsList: StudentAssignment[];
 }
 
 export interface StudentDashboardResponse {

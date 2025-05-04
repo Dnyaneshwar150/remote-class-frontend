@@ -24,11 +24,11 @@ export default function Home() {
   };
 
   const handleSubmittedAssignmentCardClick = () => {
-    console.log("pending assignment");
+    router.push(`/dashboard/student/submitted-assignment`);
   };
 
   const handlePendingAssingmentCardClick = () => {
-    console.log("pending assignment");
+    router.push(`/dashboard/student/pending-assignment`);
   };
 
   const handleResourcesCardClick = () => {
@@ -126,27 +126,34 @@ export default function Home() {
             mt={2}
           >
             <StatsCard
+              title='Your Classes'
+              count={9} //TODO: add classes count
+              bgColor='var(--amber)'
+              onClick={handleResourcesCardClick}
+            />
+
+            <StatsCard
               title='Total Assignments'
               count={studentDashboardData.data.totalAssignments}
-              bgColor='var(--amber)'
+              bgColor='var(--primary-blue)'
               onClick={handleResourcesCardClick}
             />
             <StatsCard
               title='Pending Assignment'
-              count={studentDashboardData.data.submittedAssignments}
+              count={studentDashboardData.data.pendingAssignments}
               bgColor='var(--redish-orange)'
               onClick={handlePendingAssingmentCardClick}
             />
             <StatsCard
               title='Submitted Assignment'
               count={studentDashboardData.data.submittedAssignments}
-              bgColor='var(--teal)'
+              bgColor='var(--amber)'
               onClick={handleSubmittedAssignmentCardClick}
             />
             <StatsCard
               title='Resources'
               count={studentDashboardData.data.resourcesAvailable}
-              bgColor='var(--primary-blue)'
+              bgColor='var(--teal)'
               onClick={handleResourcesCardClick}
             />
           </Grid>

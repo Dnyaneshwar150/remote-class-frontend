@@ -220,6 +220,24 @@ export const remoteClassApi = createApi({
       }),
     }),
 
+    //upload student assingnemt
+
+    uploadAssignmentStudent: builder.mutation<
+      { success: boolean; message: string },
+      { id: string; file: File }
+    >({
+      query: ({ id, file }) => {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        return {
+          url: `assignment/${id}/submit`,
+          method: "POST",
+          body: formData,
+        };
+      },
+    }),
+
     getStudentProfile: builder.query<StudentInfo, void>({
       query: () => "/profile/student",
       transformResponse: (response: { success: boolean; data: StudentInfo }) =>
@@ -337,4 +355,5 @@ export const {
   useSendStudentMessageMutation,
   useDeleteGroupMutation,
   useUpdateGroupStatusMutation,
+  useUploadAssignmentStudentMutation,
 } = remoteClassApi;
