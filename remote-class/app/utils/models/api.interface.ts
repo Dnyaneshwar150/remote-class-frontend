@@ -202,6 +202,7 @@ export interface StudentDashboardData {
   submittedAssignments: number;
   pendingAssignments: number;
   resourcesAvailable: number;
+  classCount: number;
   submittedAssignmentsList: StudentAssignment[];
   pendingAssignmentsList: StudentAssignment[];
 }
@@ -361,4 +362,20 @@ export interface StudentGroup {
 export interface StudentGroupsResponse {
   success: boolean;
   data: StudentGroup[];
+}
+
+export interface ClassItem {
+  id: string;
+  name: string;
+  year: string;
+  division: string;
+  assignedTeacher: string;
+}
+
+export interface GetClassListStudentResponse {
+  success: boolean;
+  data: {
+    count: number;
+    classes: ClassItem[];
+  };
 }

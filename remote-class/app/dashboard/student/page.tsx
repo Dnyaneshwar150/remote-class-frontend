@@ -37,6 +37,10 @@ export default function Home() {
   const handleProfileClick = () => {
     router.push(`/dashboard/student/profile`);
   };
+
+  const handleClassesClick = () => {
+    router.push(`/dashboard/student/classes`);
+  };
   return (
     <LayoutWrapper>
       {isStudentDashboardLoading ? (
@@ -127,9 +131,9 @@ export default function Home() {
           >
             <StatsCard
               title='Your Classes'
-              count={9} //TODO: add classes count
+              count={studentDashboardData.data.classCount} //TODO: add classes count
               bgColor='var(--amber)'
-              onClick={handleResourcesCardClick}
+              onClick={handleClassesClick}
             />
 
             <StatsCard

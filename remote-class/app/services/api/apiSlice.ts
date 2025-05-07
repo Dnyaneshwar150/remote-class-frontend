@@ -6,6 +6,7 @@ import {
   CreateStudentPayload,
   CreateStudentResponse,
   ForgetPasswordPayload,
+  GetClassListStudentResponse,
   GroupCreatePayload,
   GroupInfoResponse,
   GroupMessageResponse,
@@ -167,6 +168,13 @@ export const remoteClassApi = createApi({
       }),
       providesTags: ["Classes"],
     }),
+
+    //get classes for student
+
+    getClassesListStudent: builder.query<GetClassListStudentResponse, void>({
+      query: () => "class/my-classes",
+    }),
+
     //create clases
     createClass: builder.mutation<CreateClassResponse, CreateClassPayload>({
       query: (data) => ({
@@ -356,4 +364,5 @@ export const {
   useDeleteGroupMutation,
   useUpdateGroupStatusMutation,
   useUploadAssignmentStudentMutation,
+  useGetClassesListStudentQuery,
 } = remoteClassApi;
